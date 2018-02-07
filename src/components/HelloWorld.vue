@@ -1,7 +1,13 @@
 <template>
   <div class="browserContainer">
 
-    
+    <!-- todo: icons -->
+    <div class="iconContainer">
+      <div class="icon"></div>
+      <p v-on:click="open">Open</p>
+    </div>
+
+
     <div class="browserWindow" v-if="showWindow">
       <div class="banner">
         <div class="close" v-on:click="close">X</div>
@@ -27,6 +33,8 @@
     </div>
 
 
+    <!-- todo: navbar -->
+    <!-- on mobile, icons should disappear and navbar should open windows -->
 
   </div>
 </template>
@@ -42,27 +50,33 @@
       }
     },
     methods: {
-      close () {
+      open() {
+        this.showWindow = true
+      },
+      close() {
         this.showWindow = false
       }
     },
     mounted() {
-      
+
       // resize / reposition elements on window resize
       window.addEventListener('resize', () => {
 
         let elOffsetX = parseInt(document.querySelector('.browserWindow').getAttribute('data-x')) || 0
         let elOffsetY = parseInt(document.querySelector('.browserWindow').getAttribute('data-y')) || 0
-        let elWidth = parseInt(window.getComputedStyle(document.querySelector('.browserWindow'))['width'].replace('px', ''))
+        let elWidth = parseInt(window.getComputedStyle(document.querySelector('.browserWindow'))['width'].replace(
+          'px', ''))
         let elCombinedX = elOffsetX + elWidth
 
-        let containerWidth = parseInt(window.getComputedStyle(document.querySelector('.browserContainer'))['width'].replace('px', ''))
+        let containerWidth = parseInt(window.getComputedStyle(document.querySelector('.browserContainer'))['width']
+          .replace('px', ''))
 
 
         if (elCombinedX > containerWidth) {
-            let newOffsetX = (containerWidth - elWidth) // - 24 // ?? not sure why I need 10px here.
-            document.querySelector('.browserWindow').style.transform = 'translate(' + newOffsetX + 'px, ' + elOffsetY + 'px)'
-            document.querySelector('.browserWindow').setAttribute('data-x', newOffsetX)
+          let newOffsetX = (containerWidth - elWidth) // - 24 // ?? not sure why I need 10px here.
+          document.querySelector('.browserWindow').style.transform = 'translate(' + newOffsetX + 'px, ' + elOffsetY +
+            'px)'
+          document.querySelector('.browserWindow').setAttribute('data-x', newOffsetX)
         }
 
       })
@@ -82,9 +96,9 @@
         target.setAttribute('data-y', y);
       }
 
-      interact('.browserWindow')
+      interact('.browserWindow, .iconContainer')
         .draggable({
-          allowFrom: '.banner',
+          allowFrom: '.banner, .icon',
           onmove: dragMoveListener,
           restrict: {
             restriction: 'parent',
@@ -96,7 +110,7 @@
             }
           }
         })
-
+      interact('.browserWindow')
         .resizable({
 
           // resize from all edges and corners  
@@ -116,15 +130,14 @@
           // minimum size
           restrictSize: {
             min: {
-              width: 100,
-              height: 50
+              width: 400,
+              height: 250
             },
           },
 
           inertia: false
         })
         .on('resizemove', function (event) {
-          console.log('resizemove event fired')
           var target = event.target,
             x = (parseFloat(target.getAttribute('data-x')) || 0),
             y = (parseFloat(target.getAttribute('data-y')) || 0);
@@ -151,8 +164,6 @@
 </script>
 
 <style scoped lang='scss'>
-
-
   .browserContainer {
     position: absolute;
     box-sizing: border-box;
@@ -169,14 +180,13 @@
     background: rgba(255, 0, 0, 0.15);
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    // todo: make an auto height rule for short screens/mobile
+    -moz-osx-font-smoothing: grayscale; // todo: make an auto height rule for short screens/mobile
   }
 
   .browserWindow {
     position: relative;
-    width: 200px;
-    height: 200px;
+    width: 600px;
+    height: 400px;
     background: white; // cursor: pointer;
     box-sizing: border-box;
     border: 12px solid rgba(255, 0, 0, 0.5);
@@ -216,6 +226,26 @@
     cursor: pointer;
     color: white;
     text-align: center;
+  }
+
+  .iconContainer {
+    position: relative;
+    display: inline-block;
+    padding: 24px;
+    text-align: center;
+    color: white;
+    p {
+      cursor: pointer;
+      background: rgba(255, 0, 0, 0.15);
+    }
+  }
+
+  .icon {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    background: rgba(255, 0, 0, 0.75);
+    cursor: pointer;
   }
 
 </style>
