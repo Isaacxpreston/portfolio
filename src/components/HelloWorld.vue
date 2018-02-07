@@ -12,22 +12,8 @@
         <div class="close" v-on:click="close">X</div>
       </div>
       <div class="content">
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
-        <p>content</p>
+        <!-- inject content here -->
+        <portfolio />
       </div>
     </div>
 
@@ -46,12 +32,13 @@
 
 <script>
   import interact from 'interactjs'
+  import portfolio from './portfolio'
 
   export default {
     name: 'HelloWorld',
     data() {
       return {
-        showWindow: true,
+        showWindow: false,
         showNavigation: false
       }
     },
@@ -167,6 +154,9 @@
           // target.textContent = Math.round(event.rect.width) + '\u00D7' + Math.round(event.rect.height);
         })
 
+    },
+    components: {
+      portfolio
     }
   }
 
@@ -200,8 +190,8 @@
 
   .browserWindow {
     position: relative;
-    width: 600px;
-    height: 400px;
+    width: 850px;
+    height: 500px;
     background: white; // cursor: pointer;
     box-sizing: border-box;
     border: 12px solid rgba(255, 0, 0, 0.5);
@@ -252,6 +242,7 @@
     p {
       cursor: pointer;
       background: rgba(255, 0, 0, 0.15);
+      user-select: none;
     }
   }
 
@@ -286,7 +277,6 @@
     cursor: pointer;
     user-select: none;
     p {
-      // background: blue;
       position: absolute;
       top: 0;
       left: 0;
