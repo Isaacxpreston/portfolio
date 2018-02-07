@@ -1,7 +1,6 @@
 <template>
   <div class="browserContainer">
 
-    <!-- todo: icons -->
     <div class="iconContainer">
       <div class="icon"></div>
       <p v-on:click="open">Open</p>
@@ -33,8 +32,14 @@
     </div>
 
 
-    <!-- todo: navbar -->
-    <!-- on mobile, icons should disappear and navbar should open windows -->
+    <div class="navbar">
+      <div class="start" v-on:click="toggleNavigation">
+        <p>Start</p>
+      </div>
+    </div>
+
+    <div class="navigation" v-if="showNavigation">
+    </div>
 
   </div>
 </template>
@@ -46,7 +51,8 @@
     name: 'HelloWorld',
     data() {
       return {
-        showWindow: true
+        showWindow: true,
+        showNavigation: false
       }
     },
     methods: {
@@ -55,6 +61,9 @@
       },
       close() {
         this.showWindow = false
+      },
+      toggleNavigation () {
+        this.showNavigation = !this.showNavigation ? true : false
       }
     },
     mounted() {
@@ -164,6 +173,12 @@
 </script>
 
 <style scoped lang='scss'>
+  .vertical-center {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
   .browserContainer {
     position: absolute;
     box-sizing: border-box;
@@ -246,6 +261,51 @@
     height: 90px;
     background: rgba(255, 0, 0, 0.75);
     cursor: pointer;
+  }
+
+  .navbar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: rgba(255, 0, 0, 0.15);
+  }
+
+  .start {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 36px;
+    width: 100px;
+    text-align: center;
+    color: white;
+    background: rgba(255, 0, 0, 0.5);
+    margin-top: 12px;
+    margin-left: 24px;
+    cursor: pointer;
+    user-select: none;
+    p {
+      // background: blue;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      margin: auto;
+      height: 24px;
+    }
+  }
+
+  .navigation {
+    position: absolute;
+    width: 200px;
+    height: 300px;
+    bottom: 0;
+    left: 0;
+    margin-left: 12px;
+    margin-bottom: 60px;
+    background: rgba(255, 0, 0, 0.75);
   }
 
 </style>
