@@ -1,7 +1,33 @@
 <template>
-  <div class="container">
-    <div class="dragMe"></div>
-    <!-- <div class="dragMe"></div> -->
+  <div class="browserContainer">
+
+    
+    <div class="browserWindow" v-if="showWindow">
+      <div class="banner">
+        <div class="close" v-on:click="close">X</div>
+      </div>
+      <div class="content">
+        <p>content</p>
+        <p>content</p>
+        <p>content</p>
+        <p>content</p>
+        <p>content</p>
+        <p>content</p>
+        <p>content</p>
+        <p>content</p>
+        <p>content</p>
+        <p>content</p>
+        <p>content</p>
+        <p>content</p>
+        <p>content</p>
+        <p>content</p>
+        <p>content</p>
+        <p>content</p>
+      </div>
+    </div>
+
+
+
   </div>
 </template>
 
@@ -12,7 +38,12 @@
     name: 'HelloWorld',
     data() {
       return {
-        originalX: null
+        showWindow: true
+      }
+    },
+    methods: {
+      close () {
+        this.showWindow = false
       }
     },
     mounted() {
@@ -20,19 +51,18 @@
       // resize / reposition elements on window resize
       window.addEventListener('resize', () => {
 
-        let elOffsetX = parseInt(document.querySelector('.dragMe').getAttribute('data-x')) || 0
-        let elOffsetY = parseInt(document.querySelector('.dragMe').getAttribute('data-y')) || 0
-        let elWidth = parseInt(window.getComputedStyle(document.querySelector('.dragMe'))['width'].replace('px', ''))
+        let elOffsetX = parseInt(document.querySelector('.browserWindow').getAttribute('data-x')) || 0
+        let elOffsetY = parseInt(document.querySelector('.browserWindow').getAttribute('data-y')) || 0
+        let elWidth = parseInt(window.getComputedStyle(document.querySelector('.browserWindow'))['width'].replace('px', ''))
         let elCombinedX = elOffsetX + elWidth
 
-        let containerWidth = parseInt(window.getComputedStyle(document.querySelector('.container'))['width'].replace('px', ''))
+        let containerWidth = parseInt(window.getComputedStyle(document.querySelector('.browserContainer'))['width'].replace('px', ''))
 
 
         if (elCombinedX > containerWidth) {
-            this.originalX = elOffsetX
             let newOffsetX = (containerWidth - elWidth) // - 24 // ?? not sure why I need 10px here.
-            document.querySelector('.dragMe').style.transform = 'translate(' + newOffsetX + 'px, ' + elOffsetY + 'px)'
-            document.querySelector('.dragMe').setAttribute('data-x', newOffsetX)
+            document.querySelector('.browserWindow').style.transform = 'translate(' + newOffsetX + 'px, ' + elOffsetY + 'px)'
+            document.querySelector('.browserWindow').setAttribute('data-x', newOffsetX)
         }
 
       })
@@ -52,8 +82,9 @@
         target.setAttribute('data-y', y);
       }
 
-      interact('.dragMe')
+      interact('.browserWindow')
         .draggable({
+          allowFrom: '.banner',
           onmove: dragMoveListener,
           restrict: {
             restriction: 'parent',
@@ -120,7 +151,9 @@
 </script>
 
 <style scoped lang='scss'>
-  .container {
+
+
+  .browserContainer {
     position: absolute;
     box-sizing: border-box;
     border: 5px solid rgba(255, 0, 0, 0.5);
@@ -134,17 +167,55 @@
     max-width: 100vw;
     max-height: 100vh;
     background: rgba(255, 0, 0, 0.15);
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    // todo: make an auto height rule for short screens/mobile
   }
 
-  .dragMe {
+  .browserWindow {
     position: relative;
     width: 200px;
     height: 200px;
-    background: blue; // cursor: pointer;
+    background: white; // cursor: pointer;
     box-sizing: border-box;
     border: 12px solid rgba(255, 0, 0, 0.5);
     max-width: 100%;
     max-height: 100%;
+  }
+
+  .content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 48px);
+    margin-top: 48px;
+    overflow: scroll;
+    background: white;
+  }
+
+  .banner {
+    position: absolute;
+    height: 48px;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(255, 0, 0, 0.75);
+  }
+
+  .close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 24px;
+    height: 24px;
+    background: rgba(255, 0, 0, 0.75);
+    margin-top: 12px;
+    margin-right: 12px;
+    cursor: pointer;
+    color: white;
+    text-align: center;
   }
 
 </style>
