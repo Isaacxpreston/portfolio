@@ -7,7 +7,7 @@
     </div>
 
 
-    <div class="browserWindow" v-if="showWindow">
+    <div class="browserWindow" :class="browserWindowClass">
       <div class="banner">
         <div class="close" v-on:click="close">X</div>
       </div>
@@ -38,16 +38,16 @@
     name: 'HelloWorld',
     data() {
       return {
-        showWindow: false,
+        browserWindowClass: 'hidden',
         showNavigation: false
       }
     },
     methods: {
       open() {
-        this.showWindow = true
+        this.browserWindowClass = ''
       },
       close() {
-        this.showWindow = false
+        this.browserWindowClass = 'hidden'
       },
       toggleNavigation () {
         this.showNavigation = !this.showNavigation ? true : false
@@ -189,7 +189,9 @@
   }
 
   .browserWindow {
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 850px;
     height: 500px;
     background: white; // cursor: pointer;
@@ -231,6 +233,7 @@
     cursor: pointer;
     color: white;
     text-align: center;
+    user-select: none;
   }
 
   .iconContainer {
@@ -273,7 +276,7 @@
     color: white;
     background: rgba(255, 0, 0, 0.5);
     margin-top: 12px;
-    margin-left: 24px;
+    margin-left: 18px;
     cursor: pointer;
     user-select: none;
     p {
@@ -293,9 +296,15 @@
     height: 300px;
     bottom: 0;
     left: 0;
-    margin-left: 12px;
+    margin-left: 18px;
     margin-bottom: 60px;
     background: rgba(255, 0, 0, 0.75);
+  }
+
+
+  .hidden {
+    opacity: 0;
+    pointer-events: none;
   }
 
 </style>
