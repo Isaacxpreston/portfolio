@@ -25,6 +25,30 @@
     </div>
 
     <div class="navigation" v-if="showNavigation">
+        <div class="navigationTab">
+          <div class="iconPlaceholder"></div>
+          <div class="label">Open Window</div>
+        </div>
+        <div class="navigationTab">
+          <div class="iconPlaceholder"></div>
+          <div class="label">Open Window</div>
+        </div>
+        <div class="navigationTab">
+          <div class="iconPlaceholder"></div>
+          <div class="label">Open Window</div>
+        </div>
+        <div class="navigationTab">
+          <div class="iconPlaceholder"></div>
+          <div class="label">Open Window</div>
+        </div>
+        <div class="navigationTab">
+          <div class="iconPlaceholder"></div>
+          <div class="label">Open Window</div>
+        </div>
+        <div class="navigationTab">
+          <div class="iconPlaceholder"></div>
+          <div class="label">Open Window</div>
+        </div>
     </div>
 
   </div>
@@ -49,7 +73,7 @@
       close() {
         this.browserWindowClass = 'hidden'
       },
-      toggleNavigation () {
+      toggleNavigation() {
         this.showNavigation = !this.showNavigation ? true : false
       }
     },
@@ -151,7 +175,6 @@
 
           target.setAttribute('data-x', x);
           target.setAttribute('data-y', y);
-          // target.textContent = Math.round(event.rect.width) + '\u00D7' + Math.round(event.rect.height);
         })
 
     },
@@ -293,12 +316,38 @@
   .navigation {
     position: absolute;
     width: 200px;
-    height: 300px;
+    // height: calc(100% - 60px);
     bottom: 0;
     left: 0;
     margin-left: 18px;
     margin-bottom: 60px;
     background: rgba(255, 0, 0, 0.75);
+    .navigationTab {
+      position: relative;
+      width: 100%;
+      height: 50px;
+      color: white;
+      background: rgba(255, 255, 255, 0.25);
+      cursor: pointer;
+      overflow: hidden;
+      .label {
+        position: relative;
+        height: 24px;
+        top: 50%;
+        transform: translateY(-50%);
+        margin-left: 60px;
+      }
+      .iconPlaceholder {
+        position: absolute;
+        width: 36px;
+        height: 36px;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        margin-left: 12px;
+        background: white;
+      }
+    }
   }
 
 
