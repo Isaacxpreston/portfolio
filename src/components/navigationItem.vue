@@ -1,17 +1,32 @@
 <template>
   <div class="navigation__item">
-    <h4>{{data.title}}</h4>
-    <navigationItem v-for="(item, index) in data.children" :key="index" :data="item" />
+    <h4 @click="expanded = !expanded">{{data.title}} <small>{{expandText}}</small></h4>
+    <navigationItem v-for="(item, index) in data.children" :key="index" :data="item" v-show="expanded" />
   </div>
 </template>
 
 <script>
-import navigationItem from './navigationItem'
+  import navigationItem from './navigationItem'
 
-export default {
-  props: ['data'],
-  name: 'navigationItem'
-}
+  export default {
+    props: ['data'],
+    name: 'navigationItem',
+    data () {
+      return {
+        expanded: false
+      }
+    },
+    computed: {
+      expandText () {
+        if (this.data.children.length) {
+          return this.expanded ? '[ - ]' : '[+]'
+        } else {
+          return ''
+        }
+      }
+    },
+  }
+
 </script>
 
 
@@ -22,8 +37,6 @@ export default {
     width: 100%;
     padding-left: 12px;
     cursor: pointer;
-    // height: 22px;
-    // overflow: hidden;
     >h4 {
       position: relative;
       border-left: 1px solid white;
@@ -42,6 +55,12 @@ export default {
         top: 50%;
         left: 0;
         transform: translateY(-50%);
+      }
+      >small {
+        color: white;
+        font-size: 8px;
+        display: inline-block;
+        vertical-align: middle;
       }
     }
   }
