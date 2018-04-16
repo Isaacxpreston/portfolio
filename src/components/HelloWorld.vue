@@ -24,28 +24,24 @@
       </div>
     </div>
 
-    <div class="navigation" v-if="showNavigation">
-        <div class="navigationTab">
+    <div class="menu" v-if="showNavigation">
+        <div class="menuTab">
           <div class="iconPlaceholder"></div>
           <div class="label">Open Window</div>
         </div>
-        <div class="navigationTab">
+        <div class="menuTab">
           <div class="iconPlaceholder"></div>
           <div class="label">Open Window</div>
         </div>
-        <div class="navigationTab">
+        <div class="menuTab">
           <div class="iconPlaceholder"></div>
           <div class="label">Open Window</div>
         </div>
-        <div class="navigationTab">
+        <div class="menuTab">
           <div class="iconPlaceholder"></div>
           <div class="label">Open Window</div>
         </div>
-        <div class="navigationTab">
-          <div class="iconPlaceholder"></div>
-          <div class="label">Open Window</div>
-        </div>
-        <div class="navigationTab">
+        <div class="menuTab">
           <div class="iconPlaceholder"></div>
           <div class="label">Open Window</div>
         </div>
@@ -185,6 +181,14 @@
 
 </script>
 
+<style lang="scss">
+  // global styles
+  h1, h2, h3, h4, p, a {
+    margin: 0px;
+    font-weight: 400;
+  }
+</style>
+
 <style scoped lang='scss'>
   .vertical-center {
     position: relative;
@@ -313,7 +317,7 @@
     }
   }
 
-  .navigation {
+  .menu {
     position: absolute;
     width: 200px;
     // height: calc(100% - 60px);
@@ -322,13 +326,14 @@
     margin-left: 18px;
     margin-bottom: 60px;
     background: rgba(255, 0, 0, 0.75);
-    .navigationTab {
+
+    .menuTab {
       position: relative;
       width: 100%;
-      height: 50px;
+      height: 60px;
       color: white;
       background: rgba(255, 255, 255, 0.25);
-      cursor: pointer;
+      cursor: pointer;  
       overflow: hidden;
       .label {
         position: relative;
@@ -348,6 +353,7 @@
         background: white;
       }
     }
+
   }
 
 
