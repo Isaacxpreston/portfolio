@@ -1,25 +1,27 @@
 <template>
   <div class="browserContainer">
-
+    
+    <!-- desktop icon -->
     <div class="iconContainer">
       <div class="icon"></div>
       <p v-on:click="open">Open</p>
     </div>
 
-
+    <!-- browser -->
     <div class="browserWindow" :class="browserWindowClass">
       <div class="banner">
-        <div class="close" v-on:click="close">X</div>
+        <div class="close" @click="close">X</div>
+        <div class="fullscreen" @click="toggleFullscreen">{{fullscreenIcon}}</div>
       </div>
       <div class="content">
-        <!-- inject content here -->
+        <!-- view + file explorer -->
         <portfolio />
       </div>
     </div>
 
-
-    <div class="navbar">
-      <div class="start" v-on:click="toggleNavigation">
+    <!-- start menu -->
+    <div class="menubar">
+      <div class="start" @click="toggleNavigation">
         <p>Start</p>
       </div>
     </div>
@@ -58,16 +60,27 @@
     name: 'HelloWorld',
     data() {
       return {
-        browserWindowClass: 'hidden',
+        browserWindowClass: {
+          'hidden': true,
+          'browserWindow__fullscreen': false
+        },
         showNavigation: false
+      }
+    },
+    computed: {
+      fullscreenIcon () {
+        return this.browserWindowClass['browserWindow__fullscreen'] ? '-' : '+'
       }
     },
     methods: {
       open() {
-        this.browserWindowClass = ''
+        this.browserWindowClass.hidden = false
       },
       close() {
-        this.browserWindowClass = 'hidden'
+        this.browserWindowClass.hidden = true
+      },
+      toggleFullscreen () {
+        this.browserWindowClass['browserWindow__fullscreen'] = !this.browserWindowClass['browserWindow__fullscreen']
       },
       toggleNavigation() {
         this.showNavigation = !this.showNavigation ? true : false
@@ -205,8 +218,10 @@
     bottom: 0;
     right: 0;
     margin: auto;
-    width: 1200px;
-    height: 600px;
+    height: 100%;
+    width: 100%;
+    // width: 1200px;
+    // height: 600px;
     max-width: 100vw;
     max-height: 100vh;
     background: rgba(255, 0, 0, 0.15);
@@ -226,7 +241,16 @@
     border: 12px solid rgba(255, 0, 0, 0.5);
     max-width: 100%;
     max-height: 100%;
+    transition: width 0.4s ease, height 0.4s ease;
+    &__fullscreen {
+      width: 100%;
+      height: 100%;
+      transform: none !important;
+      transition: width 0.4s ease, height 0.4s ease, transform 0.4s ease;
+    }
   }
+
+
 
   .content {
     position: absolute;
@@ -248,7 +272,7 @@
     background: rgba(255, 0, 0, 0.75);
   }
 
-  .close {
+  .close, .fullscreen {
     position: absolute;
     top: 0;
     right: 0;
@@ -261,6 +285,10 @@
     color: white;
     text-align: center;
     user-select: none;
+  }
+
+  .fullscreen {
+    margin-right: 48px;
   }
 
   .iconContainer {
@@ -284,7 +312,7 @@
     cursor: pointer;
   }
 
-  .navbar {
+  .menubar {
     position: absolute;
     bottom: 0;
     left: 0;

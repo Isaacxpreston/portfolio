@@ -10,6 +10,8 @@
 
   export default {
     props: ['data'],
+    // name is needed for recursive components
+    // https://vuejs.org/v2/guide/components-edge-cases.html#Recursive-Components
     name: 'navigationItem',
     data () {
       return {

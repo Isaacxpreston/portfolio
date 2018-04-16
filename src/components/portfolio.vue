@@ -2,7 +2,7 @@
   <div class="portfolioContainer">
     <navigation />
     <div class="portfolioWindow">
-      <p>window</p>
+      <p>content here</p>
     </div>
   </div>
 </template>

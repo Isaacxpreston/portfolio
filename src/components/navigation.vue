@@ -1,21 +1,6 @@
 <template>
   <nav class="navigation">
     <navigationItem v-for="(item, index) in items" :key="index" :data="item" />
-    <!-- <div class="navigation__item">
-      <h4>menu item</h4>
-    </div>
-    <div class="navigation__item">
-      <h4>menu item</h4>
-      <div class="navigation__item">
-        <h4>submenu item</h4>
-      </div>
-      <div class="navigation__item">
-        <h4>submenu item</h4>
-      </div>
-      <div class="navigation__item">
-        <h4>submenu item</h4>
-      </div>
-    </div> -->
   </nav>
 </template>
 
