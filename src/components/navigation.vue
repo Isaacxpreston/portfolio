@@ -36,11 +36,11 @@ export default {
               title: 'menu 3 child 1',
               children: [
                 {
-                  title: 'menu 3 grandchild 1',
+                  title: 'grandchild 1',
                   children: []
                 },
                 {
-                  title: 'menu 3 grandchild 2',
+                  title: 'grandchild 2',
                   children: []
                 }
               ]

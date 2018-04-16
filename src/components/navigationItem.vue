@@ -39,6 +39,7 @@
     width: 100%;
     padding-left: 12px;
     cursor: pointer;
+    user-select: none;
     >h4 {
       position: relative;
       border-left: 1px solid white;

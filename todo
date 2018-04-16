@@ -1,0 +1,13 @@
+Features
+  Maximize/minimize modules
+  About/Contact modules
+  Search module
+  Color picker module
+  Intro screen
+  Project module
+    Open module in new window with url
+    Image slider module
+  All copy/assets managed in Contentul
+
+Bugs
+  Need more precise scaling on modules when resizing browser window

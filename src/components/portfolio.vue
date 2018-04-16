@@ -2,7 +2,13 @@
   <div class="portfolioContainer">
     <navigation />
     <div class="portfolioWindow">
-      <p>content here</p>
+      content here
+      <!-- <div>(Image)</div>
+      <h1>Title</h1>
+      <p><em>quick links (github, url, etc.)</em></p>
+      <p><em>brief description</em></p>
+      <h2>popout gallery</h2>
+      <div>gallery thumbnails</div> -->
     </div>
   </div>
 </template>
@@ -14,7 +20,7 @@
   export default {
     data () {
       return {
-
+        // data here
       }
     },
     components: {
