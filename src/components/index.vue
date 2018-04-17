@@ -4,38 +4,27 @@
     <!-- desktop icon -->
     <div class="icons-container">
       <div class="icon"></div>
-      <p v-on:click="openBrowser">Open</p>
+      <p @click="openBrowser">open</p>
     </div>
-
-    <browser :browserClass="browserClass" @change="applyChange" />
+    
+    <!-- browser windows -->
+    <browser :browserClass="browserClass" @change="applyChange" view="portfolio" />
 
     <!-- start menu -->
     <div class="menubar">
       <div class="start" @click="toggleNavigation">
         <p>Start</p>
       </div>
+      
+      <!-- tabs -->
+      <tabsbar :tabs="tabs" @change="applyChange" />
+
     </div>
 
     <div class="menu" v-if="showNavigation">
       <div class="menuTab">
         <div class="iconPlaceholder"></div>
-        <div class="label">Open Window</div>
-      </div>
-      <div class="menuTab">
-        <div class="iconPlaceholder"></div>
-        <div class="label">Open Window</div>
-      </div>
-      <div class="menuTab">
-        <div class="iconPlaceholder"></div>
-        <div class="label">Open Window</div>
-      </div>
-      <div class="menuTab">
-        <div class="iconPlaceholder"></div>
-        <div class="label">Open Window</div>
-      </div>
-      <div class="menuTab">
-        <div class="iconPlaceholder"></div>
-        <div class="label">Open Window</div>
+        <div class="label">open</div>
       </div>
     </div>
 
@@ -44,18 +33,18 @@
 
 <script>
   import interact from 'interactjs'
-  // import portfolio from './portfolio'
   import browser from './browser'
+  import tabsbar from './tabsbar'
 
   export default {
-    name: 'HelloWorld',
     data() {
       return {
         browserClass: {
           'hidden': true,
           'browser--fullscreen': false
         },
-        showNavigation: false
+        showNavigation: false,
+        tabs: ['1', '2', '$', '#']
       }
     },
     computed: {
@@ -64,13 +53,20 @@
       }
     },
     methods: {
-      applyChange (callback) {
-        callback(this)
+      applyChange (callback, args) {
+        this[callback].apply(null, args)
       },
       openBrowser() {
         this.browserClass.hidden = false
+        if (this.tabs.indexOf('P') === -1) {
+          this.tabs.push('P')
+        }
       },
       closeBrowser() {
+        this.browserClass.hidden = true
+        this.tabs = []
+      },
+      minimizeBrowser () {
         this.browserClass.hidden = true
       },
       toggleFullscreenBrowser() {
@@ -111,8 +107,8 @@
 
     },
     components: {
-      // portfolio,
-      browser
+      browser,
+      tabsbar
     }
   }
 
@@ -159,83 +155,6 @@
     -moz-osx-font-smoothing: grayscale; // todo: make an auto height rule for short screens/mobile
   }
 
-  // .browser {
-  //   position: absolute;
-  //   top: 0;
-  //   left: 0;
-  //   width: 850px;
-  //   height: 500px;
-  //   background: white; // cursor: pointer;
-  //   box-sizing: border-box;
-  //   border: 12px solid rgba(255, 0, 0, 0.5);
-  //   max-width: 100%;
-  //   max-height: 100%;
-  //   &--fullscreen,
-  //     {
-  //     width: 100% !important;
-  //     height: 100% !important;
-  //     transform: none !important;
-  //     transition: width 0.4s ease, height 0.4s ease, transform 0.4s ease;
-  //   }
-  //   @media screen and (max-width: 767px) {
-  //     // todo: find a better way to write this
-  //     width: 100% !important;
-  //     height: 100% !important;
-  //     transform: none !important;
-  //     transition: width 0.4s ease, height 0.4s ease, transform 0.4s ease;
-  //   }
-  // }
-
-
-
-  // .content {
-  //   position: absolute;
-  //   top: 0;
-  //   left: 0;
-  //   width: 100%;
-  //   height: calc(100% - 48px);
-  //   margin-top: 48px;
-  //   overflow: scroll;
-  //   background: white;
-  // }
-
-  // .banner {
-  //   position: absolute;
-  //   height: 48px;
-  //   width: 100%;
-  //   top: 0;
-  //   left: 0;
-  //   background: rgba(255, 0, 0, 0.75);
-  // }
-
-  // .banner__icon {
-  //   position: absolute;
-  //   top: 0;
-  //   right: 0;
-  //   width: 24px;
-  //   height: 24px;
-  //   background: rgba(255, 0, 0, 0.75);
-  //   margin-top: 12px;
-  //   cursor: pointer;
-  //   color: white;
-  //   text-align: center;
-  //   user-select: none;
-  //   &--minimize {
-  //     margin-right: 84px;
-  //   }
-  //   &--close {
-  //     margin-right: 12px;
-  //   }
-  //   &--fullscreen {
-  //     margin-right: 48px;
-  //     @media screen and (max-width: 767px) {
-  //       display: none;
-  //     }
-  //   }
-  // }
-
-
-
   .icons-container {
     position: relative;
     display: inline-block;
@@ -279,7 +198,7 @@
     margin-left: 18px;
     cursor: pointer;
     user-select: none;
-    p {
+    >p {
       position: absolute;
       top: 0;
       left: 0;
@@ -304,7 +223,7 @@
       width: 100%;
       height: 60px;
       color: white;
-      background: rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.5);
       cursor: pointer;
       overflow: hidden;
       .label {
@@ -322,7 +241,7 @@
         left: 0;
         transform: translateY(-50%);
         margin-left: 12px;
-        background: white;
+        background: rgba(255, 0, 0, 0.15);
       }
     }
 

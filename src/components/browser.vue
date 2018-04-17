@@ -1,15 +1,14 @@
 <template>
   <!-- browser -->
-  <div class="browser" :class="browserClass">
+  <div class="browser" :class="[browserClass]">
     <div class="topbar">
-      <div class="topbar__icon topbar__icon--minimize">m</div>
-      <div class="topbar__icon topbar__icon--fullscreen" @click="toggleFullscreenBrowser">{{fullscreenIcon}}</div>
-      <div class="topbar__icon topbar__icon--close" @click="closeBrowser">X</div>
+      <div class="topbar__icon topbar__icon--minimize" @click="emit('minimizeBrowser')">m</div>
+      <div class="topbar__icon topbar__icon--fullscreen" @click="emit('toggleFullscreenBrowser')">{{fullscreenIcon}}</div>
+      <div class="topbar__icon topbar__icon--close" @click="emit('closeBrowser')">X</div>
     </div>
     <div class="browser__content">
-      <!-- portfolio view + file explorer -->
-      <!-- todo: make component conditional on props -->
-      <portfolio />
+      <!-- browser content from props -->
+      <component :is="view" />
     </div>
   </div>
 </template>
@@ -18,38 +17,15 @@
 <script>
   import interact from 'interactjs'
   import portfolio from './portfolio'
+  import emit from './mixins/emit'
 
   export default {
-    props: ['browserClass'],
-    // data() {
-    //   return {
-    //     // browserClass: {
-    //     //   'hidden': true,
-    //     //   'browser--fullscreen': false
-    //     // }
-    //   }
-    // },
+    props: ['browserClass', 'view'],
+    mixins: [emit],
     computed: {
       fullscreenIcon() {
         return this.browserClass['browser--fullscreen'] ? '-' : '+'
       }
-    },
-    methods: {
-      openBrowser() {
-        this.$emit('change', (ctx) => {
-          ctx.browserClass.hidden = false
-        })
-      },
-      closeBrowser() {
-        this.$emit('change', (ctx) => {
-          ctx.browserClass.hidden = true
-        })
-      },
-      toggleFullscreenBrowser() {
-        this.$emit('change', (ctx) => {
-          ctx.browserClass['browser--fullscreen'] = !ctx.browserClass['browser--fullscreen']
-        })
-      },
     },
     mounted() {
 
@@ -75,7 +51,6 @@
 
       })
 
-
       // todo: make a mixin.
 
       function dragMoveListener(event) {
@@ -90,6 +65,8 @@
         target.setAttribute('data-x', x);
         target.setAttribute('data-y', y);
       }
+
+      //
 
       interact('.browser')
         .draggable({
@@ -223,15 +200,18 @@
     user-select: none;
     &--minimize {
       margin-right: 84px;
-    }
-    &--close {
-      margin-right: 12px;
+      @media screen and (max-width: 767px) {
+        display: none;
+      }
     }
     &--fullscreen {
       margin-right: 48px;
       @media screen and (max-width: 767px) {
         display: none;
       }
+    }
+    &--close {
+      margin-right: 12px;
     }
   }
 
