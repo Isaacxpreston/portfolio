@@ -4,11 +4,11 @@
     <!-- desktop icon -->
     <div class="icons-container">
       <div class="icon"></div>
-      <p @click="openBrowser">open</p>
+      <p @click="openBrowser('p')">open</p>
     </div>
     
     <!-- browser windows -->
-    <browser :browserClass="browserClass" @change="applyChange" view="portfolio" />
+    <browser :browserClass="browserClass" @change="applyChange" view="portfolio" tab="p" />
 
     <!-- start menu -->
     <div class="menubar">
@@ -56,15 +56,18 @@
       applyChange (callback, args) {
         this[callback].apply(null, args)
       },
-      openBrowser() {
+      openBrowser(openTab) {
         this.browserClass.hidden = false
-        if (this.tabs.indexOf('P') === -1) {
-          this.tabs.push('P')
+        if (this.tabs.indexOf(openTab) === -1 && openTab) {
+          this.tabs.push(openTab)
         }
       },
-      closeBrowser() {
+      closeBrowser(closedTab) {
+        closedTab = closedTab || ''
         this.browserClass.hidden = true
-        this.tabs = []
+        this.tabs = this.tabs.filter((item) => {
+          return item !== closedTab
+        })
       },
       minimizeBrowser () {
         this.browserClass.hidden = true

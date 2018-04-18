@@ -4,7 +4,7 @@
     <div class="topbar">
       <div class="topbar__icon topbar__icon--minimize" @click="emit('minimizeBrowser')">m</div>
       <div class="topbar__icon topbar__icon--fullscreen" @click="emit('toggleFullscreenBrowser')">{{fullscreenIcon}}</div>
-      <div class="topbar__icon topbar__icon--close" @click="emit('closeBrowser')">X</div>
+      <div class="topbar__icon topbar__icon--close" @click="emit('closeBrowser', closeBrowserArgs)">X</div>
     </div>
     <div class="browser__content">
       <!-- browser content from props -->
@@ -20,8 +20,15 @@
   import emit from './mixins/emit'
 
   export default {
-    props: ['browserClass', 'view'],
+    props: ['browserClass', 'view', 'tab'],
     mixins: [emit],
+    data () {
+      return {
+        closeBrowserArgs: [
+          this.tab
+        ]
+      }
+    },
     computed: {
       fullscreenIcon() {
         return this.browserClass['browser--fullscreen'] ? '-' : '+'
