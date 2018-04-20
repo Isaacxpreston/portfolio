@@ -2,9 +2,9 @@
   <!-- browser -->
   <div class="browser" :class="[browserClass]">
     <div class="topbar">
-      <div class="topbar__icon topbar__icon--minimize" @click="emit('minimizeBrowser')">m</div>
-      <div class="topbar__icon topbar__icon--fullscreen" @click="emit('toggleFullscreenBrowser')">{{fullscreenIcon}}</div>
-      <div class="topbar__icon topbar__icon--close" @click="emit('closeBrowser', closeBrowserArgs)">X</div>
+      <div class="topbar__icon topbar__icon--minimize" @click="emit('minimizeBrowser', browserArgs)">m</div>
+      <div class="topbar__icon topbar__icon--fullscreen" @click="emit('toggleFullscreenBrowser', browserArgs)">{{fullscreenIcon}}</div>
+      <div class="topbar__icon topbar__icon--close" @click="emit('closeBrowser', browserArgs)">X</div>
     </div>
     <div class="browser__content">
       <!-- browser content from props -->
@@ -24,8 +24,9 @@
     mixins: [emit],
     data () {
       return {
-        closeBrowserArgs: [
-          this.tab
+        browserArgs: [
+          this.tab,
+          this.view
         ]
       }
     },

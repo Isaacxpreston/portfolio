@@ -4,28 +4,34 @@
     <!-- desktop icon -->
     <div class="icons-container">
       <div class="icon"></div>
-      <p @click="openBrowser('p')">open</p>
+      <p @click="openBrowser('p', 'portfolio')">open p</p>
     </div>
-    
+
+    <div class="icons-container">
+      <div class="icon"></div>
+      <p @click="openBrowser('a', 'about')">open a</p>
+    </div>
+
     <!-- browser windows -->
-    <browser :browserClass="browserClass" @change="applyChange" view="portfolio" tab="p" />
+    <browser :browserClass="browserClass['portfolio']" @change="applyChange" :view="browserClass['portfolio']['template']" :tab="browserClass['portfolio']['tab']"
+    />
+
+    <browser :browserClass="browserClass['about']" @change="applyChange" :view="browserClass['about']['template']" :tab="browserClass['about']['tab']"
+    />
 
     <!-- start menu -->
     <div class="menubar">
+
       <div class="start" @click="toggleNavigation">
         <p>Start</p>
       </div>
-      
+
       <!-- tabs -->
       <tabsbar :tabs="tabs" @change="applyChange" />
 
-    </div>
+      <!-- menu nav -->
+      <menuNav :showNavigation="showNavigation" />
 
-    <div class="menu" v-if="showNavigation">
-      <div class="menuTab">
-        <div class="iconPlaceholder"></div>
-        <div class="label">open</div>
-      </div>
     </div>
 
   </div>
@@ -35,45 +41,78 @@
   import interact from 'interactjs'
   import browser from './browser'
   import tabsbar from './tabsbar'
+  import menuNav from './menuNav'
 
   export default {
     data() {
       return {
         browserClass: {
-          'hidden': true,
-          'browser--fullscreen': false
+          'portfolio': {
+            'hidden': true,
+            'browser--fullscreen': false,
+            'tab': 'p',
+            'template': 'portfolio'
+          },
+          'about': {
+            'hidden': true,
+            'browser--fullscreen': false,
+            'tab': 'a',
+            'template': 'about'
+          }
         },
         showNavigation: false,
-        tabs: ['1', '2', '$', '#']
+        tabs: [
+          // {
+          //   title: 'e',
+          //   template: 'example'
+          // }, 
+        ]
       }
     },
     computed: {
       fullscreenIcon() {
-        return this.browserClass['browser--fullscreen'] ? '-' : '+'
+        return this.browserClass.portfolio['browser--fullscreen'] ? '-' : '+'
       }
     },
     methods: {
-      applyChange (callback, args) {
+      applyChange(callback, args) {
         this[callback].apply(null, args)
       },
-      openBrowser(openTab) {
-        this.browserClass.hidden = false
-        if (this.tabs.indexOf(openTab) === -1 && openTab) {
-          this.tabs.push(openTab)
+      openBrowser(openTab, openBrowser) {
+
+        // return if does not exist
+        if (!this.browserClass[openBrowser]) return
+
+        this.browserClass[openBrowser].hidden = false
+        let flag = false
+        let exists = false
+        for (let i = 0; i < this.tabs.length; i++) {
+          if (this.tabs[i].title === openTab) {
+            flag = true
+          }
+        }
+        if (!flag) {
+          this.tabs.push({
+            title: openTab,
+            template: openBrowser
+          })
         }
       },
-      closeBrowser(closedTab) {
+      closeBrowser(closedTab, closedBrowser) {
+        console.log('closing', closedBrowser)
         closedTab = closedTab || ''
-        this.browserClass.hidden = true
+        this.browserClass[closedBrowser].hidden = true
         this.tabs = this.tabs.filter((item) => {
-          return item !== closedTab
+          return item.title !== closedTab
         })
       },
-      minimizeBrowser () {
-        this.browserClass.hidden = true
+      minimizeBrowser(closedTab, closedBrowser) {
+        console.log('minimizing', closedBrowser)
+        this.browserClass[closedBrowser].hidden = true
       },
-      toggleFullscreenBrowser() {
-        this.browserClass['browser--fullscreen'] = !this.browserClass['browser--fullscreen']
+      toggleFullscreenBrowser(openTab, openBrowser) {
+        // todo: make this work withi more than just portfolio
+        this.browserClass[openBrowser]['browser--fullscreen'] = !this.browserClass[openBrowser]['browser--fullscreen']
       },
       toggleNavigation() {
         this.showNavigation = !this.showNavigation ? true : false
@@ -111,7 +150,8 @@
     },
     components: {
       browser,
-      tabsbar
+      tabsbar,
+      menuNav
     }
   }
 
@@ -211,45 +251,6 @@
       height: 24px;
     }
   }
-
-  .menu {
-    position: absolute;
-    width: 200px; // height: calc(100% - 60px);
-    bottom: 0;
-    left: 0;
-    margin-left: 18px;
-    margin-bottom: 60px;
-    background: rgba(255, 0, 0, 0.75);
-
-    .menuTab {
-      position: relative;
-      width: 100%;
-      height: 60px;
-      color: white;
-      background: rgba(255, 255, 255, 0.5);
-      cursor: pointer;
-      overflow: hidden;
-      .label {
-        position: relative;
-        height: 24px;
-        top: 50%;
-        transform: translateY(-50%);
-        margin-left: 60px;
-      }
-      .iconPlaceholder {
-        position: absolute;
-        width: 36px;
-        height: 36px;
-        top: 50%;
-        left: 0;
-        transform: translateY(-50%);
-        margin-left: 12px;
-        background: rgba(255, 0, 0, 0.15);
-      }
-    }
-
-  }
-
 
   .hidden {
     opacity: 0;
