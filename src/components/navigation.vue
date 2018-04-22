@@ -1,6 +1,6 @@
 <template>
   <nav class="navigation">
-    <navigationItem v-for="(item, index) in items" :key="index" :data="item" />
+    <navigationItem v-for="(item, index) in data" :key="index" :data="item" />
   </nav>
 </template>
 
@@ -9,51 +9,7 @@
 import navigationItem from './navigationItem'
 
 export default {
-  data () {
-    return {
-      items: [
-        {
-          title: 'menu item 1',
-          children: []
-        },
-        {
-          title: 'menu item 2',
-          children: [
-            {
-              title: 'menu 2 child 1',
-              children: []
-            },
-            {
-              title: 'menu 2 child 2',
-              children: []
-            }
-          ]
-        },
-        {
-          title: 'menu item 3',
-          children: [
-            {
-              title: 'menu 3 child 1',
-              children: [
-                {
-                  title: 'grandchild 1',
-                  children: []
-                },
-                {
-                  title: 'grandchild 2',
-                  children: []
-                }
-              ]
-            },
-            {
-              title: 'menu 3 child 2',
-              children: []
-            }
-          ]
-        },
-      ]
-    }
-  },
+  props: ['data'],
   components: {
     navigationItem
   }

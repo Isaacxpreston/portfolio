@@ -11,12 +11,13 @@ const createBrowser = (obj) => {
   }
   return {
     ...defaults,
-    ...obj
+    ...obj  
   }
 }
 
 const createTab = (obj) => {
   const defaults = {
+    'icon': 'T',
     'open': false
   }
   return {
@@ -26,6 +27,26 @@ const createTab = (obj) => {
 }
 
 // todo: secondary (child) browsers object(s), or bool to show/hide on main menu
+
+
+// todo: add some kind of override behavior for contact, so clcking on links opens external links (github, linkedin, email, etc)
+let contactChildren = {
+  'linkedIn': createBrowser({
+    'tabData': createTab({
+      'label:': 'LinkedIn'
+    })
+  }),
+  'gitHub': {
+    'tabData': createTab({
+      'label:': 'GitHub'
+    })
+  },
+  'email': {
+    'tabData': createTab({
+      'label:': 'Email'
+    })
+  }
+}
 
 let aboutChildren = {
   'bio': createBrowser({
@@ -59,7 +80,8 @@ let aboutChildren = {
     'content': {
       'header': 'contact info',
       'copy': 'contact links will go here'
-    }
+    },
+    'children': contactChildren
   }),
   'credits': createBrowser({
     'tabData': createTab({

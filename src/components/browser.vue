@@ -10,7 +10,7 @@
     <div class="browser__content">
       <!-- browser content from props -->
       <!-- todo: move navigation out as separate component -->
-      <navigation v-if="browserData['children']" />
+      <navigation v-if="browserData['children']" :data="browserData['children']" />
       <div class="browser__content-inner" :class="browserContentClass">
         <component :is="browserData['template']" />
       </div>

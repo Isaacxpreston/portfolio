@@ -1,7 +1,7 @@
 <template>
   <div class="navigation__item">
-    <h4 @click="expanded = !expanded">{{data.title}} <small>{{expandText}}</small></h4>
-    <navigationItem v-for="(item, index) in data.children" :key="index" :data="item" v-show="expanded" />
+    <h4 @click="expanded = !expanded">{{data['tabData']['label']}} <small>{{expandText}}</small></h4>
+    <navigationItem v-if="data['children']" v-for="(item, index) in data['children']" :key="index" :data="item" v-show="expanded" />
   </div>
 </template>
 
@@ -20,13 +20,18 @@
     },
     computed: {
       expandText () {
-        if (this.data.children.length) {
+        // todo: check for null and typeof undefined.
+        if (this.data.children) {
           return this.expanded ? '[ - ]' : '[+]'
         } else {
           return ''
         }
       }
     },
+    // mounted () {
+    //   console.log('mounted with')
+    //   console.log(this.data)
+    // }
   }
 
 </script>

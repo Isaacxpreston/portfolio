@@ -19,11 +19,9 @@
       </div>
 
       <!-- browser tabs -->
-      <!-- :tabs="tabs" -->
       <tabsbar  :browserData="browsers" @change="applyChange" />
 
       <!-- menu navigation -->
-      <!-- todo: iterate over data -->
       <menuNav @change="applyChange" :browserData="browsers" v-if="showNavigation" />
 
     </div>
