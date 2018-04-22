@@ -1,3 +1,6 @@
+x - completed
+n - will not develop
+
 Features
   [x] Maximize/minimize modules
   About/Contact modules
@@ -7,17 +10,19 @@ Features
     toggle menus/display
   Intro screen
   Project module
-    Open module in new window with url
+    Open modules in new window with url
     Image slider module
-  All copy/assets managed in Contentul
+  [n] All copy/assets managed in Contentul
+  add 'minimize', 'maximize', 'close' labels to browser buttons
 
 Data
   Make tabsbar anbd menuNav pull from same data source
     possibly restructure so there is a 'show on tabsbar' t/f boolean instead of push/filter from array in current setup.
     make navigation a separate component (instead of in portfolio template), possibly a 'navigation' or 'children' child object on every browser template, that references other templates.
 
-
 Bugs
   bring window to front when clicked
   Need more precise scaling on modules when resizing browser window
   resize is acting buggy from top left/right corners
+    might resolve if move .interact method to index mounted instead of on every browser.vue instance
+  z-index does not update on browser drag, only on click

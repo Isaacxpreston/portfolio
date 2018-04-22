@@ -1,15 +1,20 @@
 <template>
-  <div class="menuNav" v-if="showNavigation">
-    <div class="menuTab">
-      <div class="iconPlaceholder"></div>
-      <div class="label">open</div>
+  <div class="menuNav">
+
+    <div class="menuTab" v-for="(browser, index) in browserData" :key="'menuTab-' + index" @click="emit('openBrowser', [browser['template']])">
+      <div class="iconPlaceholder">{{browser['tabData']['icon']}}</div>
+      <div class="label">{{browser['tabData']['label']}}</div>
     </div>
+
   </div>
 </template>
 
 <script>
+  import emit from './mixins/emit'
+
   export default {
-    props: ['showNavigation']
+    mixins: [emit],
+    props: ['browserData']
   }
 
 </script>

@@ -1,15 +1,16 @@
 <template>
   <!-- browser -->
-  <div class="browser" :class="[browserClass]" @click="emit('bringToFront', [view])">
+  <div class="browser" :class="[browserData['classes']]" @click="emit('bringToFront', [browserData['template']])">
     <div class="topbar">
-      <div class="topbar__icon topbar__icon--minimize" @click="emit('minimizeBrowser', [view])">m</div>
-      <div class="topbar__icon topbar__icon--fullscreen" @click="emit('toggleFullscreenBrowser', browserArgs)">{{fullscreenIcon}}</div>
-      <div class="topbar__icon topbar__icon--close" @click="emit('closeBrowser', [view])">X</div>
+      <div class="topbar__label">{{browserData['tabData']['label']}}</div>
+      <div class="topbar__icon topbar__icon--minimize" @click="emit('minimizeBrowser', [browserData['template']])">m</div>
+      <div class="topbar__icon topbar__icon--fullscreen" @click="emit('toggleFullscreenBrowser', [browserData['template']])">{{fullscreenIcon}}</div>
+      <div class="topbar__icon topbar__icon--close" @click="emit('closeBrowser', [browserData['template']])">X</div>
     </div>
     <div class="browser__content">
       <!-- browser content from props -->
       <!-- todo: move navigation out as separate component -->
-      <component :is="view" />
+      <component :is="browserData['template']" />
     </div>
   </div>
 </template>
@@ -22,22 +23,16 @@
   import emit from './mixins/emit'
 
   export default {
-    props: ['browserClass', 'view', 'tab'],
+    props: ['browserData', 'view'],
     mixins: [emit],
-    data() {
-      return {
-        browserArgs: [
-          this.tab,
-          this.view
-        ]
-      }
-    },
     computed: {
       fullscreenIcon() {
-        return this.browserClass['browser--fullscreen'] ? '-' : '+'
+        return this.browserData['browser--fullscreen'] ? '-' : '+'
       }
     },
     mounted() {
+
+      // let ctx = this
 
       // resize / reposition elements on window resize
       window.addEventListener('resize', () => {
@@ -64,6 +59,9 @@
       // todo: make a mixin.
 
       function dragMoveListener(event) {
+
+        // emit z-index toggle from drag event as well as click
+
         var target = event.target,
           // keep the dragged position in the data-x/data-y attributes
           x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
@@ -77,6 +75,7 @@
       }
 
       //
+      // todo: initialize this once from index, instead of on every browser instance.
 
       interact('.browser')
         .draggable({
