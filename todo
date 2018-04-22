@@ -1,9 +1,10 @@
 x - completed
+p - in progress
 n - will not develop
 
 Features
   [x] Maximize/minimize modules
-  About/Contact modules
+  [p] About/Contact modules
   Search module
   settings module
     Color picker module
@@ -14,9 +15,10 @@ Features
     Image slider module
   [n] All copy/assets managed in Contentul
   add 'minimize', 'maximize', 'close' labels to browser buttons
+  hide all browsers/show desktop
 
 Data
-  Make tabsbar anbd menuNav pull from same data source
+  [x] Make tabsbar anbd menuNav pull from same data source
     possibly restructure so there is a 'show on tabsbar' t/f boolean instead of push/filter from array in current setup.
     make navigation a separate component (instead of in portfolio template), possibly a 'navigation' or 'children' child object on every browser template, that references other templates.
 

@@ -1,6 +1,6 @@
 <template>
   <div class="menuNav">
-
+    
     <div class="menuTab" v-for="(browser, index) in browserData" :key="'menuTab-' + index" @click="emit('openBrowser', [browser['template']])">
       <div class="iconPlaceholder">{{browser['tabData']['icon']}}</div>
       <div class="label">{{browser['tabData']['label']}}</div>

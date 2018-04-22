@@ -19,7 +19,8 @@
       </div>
 
       <!-- browser tabs -->
-      <tabsbar :tabs="tabs" @change="applyChange" />
+      <!-- :tabs="tabs" -->
+      <tabsbar  :browserData="browsers" @change="applyChange" />
 
       <!-- menu navigation -->
       <!-- todo: iterate over data -->
@@ -57,6 +58,8 @@
       //
       openBrowser(browserTemplate) {
 
+        console.log('opening', browserTemplate)
+
         // return if does not exist
         if (!this.browsers[browserTemplate]) return
 
@@ -64,43 +67,26 @@
         this.showNavigation = false
 
         // show browser
-        console.log('opening', browserTemplate)
         this.browsers[browserTemplate]['classes']['hidden'] = false
 
-        // add to tabs bar if not already open
-        let alreadyOpen = false
-        let tabData = this.browsers[browserTemplate]['tabData']
-
-        for (let i = 0; i < this.tabs.length; i++) {
-          if (this.tabs[i].template === browserTemplate) {
-            alreadyOpen = true
-          }
-        }
-        if (!alreadyOpen) {
-
-          this.tabs.push({
-            template: browserTemplate,
-            ...tabData
-          })
-        }
+        // open tab
+        this.browsers[browserTemplate]['tabData']['open'] = true
 
         // bring browser to front on open
         this.bringToFront(browserTemplate)
       },
       closeBrowser(browserTemplate) {
-        // hide browser and remove from tabs array
+        // hide browser and close tab
         console.log('closing', browserTemplate)
 
         // call hide browser method
         this.minimizeBrowser(browserTemplate)
 
-        // remove from tabs array
-        this.tabs = this.tabs.filter((item) => {
-          return item.template !== browserTemplate
-        })
+        // close tab
+        this.browserTemplate['tabData']['open'] = false
       },
       minimizeBrowser(browserTemplate) {
-        // hide browser without removing from tabs array
+        // hide browser without closing tab
         console.log('minimizing', browserTemplate)
         this.browsers[browserTemplate]['classes']['hidden'] = true
       },
@@ -129,6 +115,8 @@
       }
     },
     mounted() {
+
+      console.log(browsers)
 
       function dragMoveListener(event) {
         var target = event.target,

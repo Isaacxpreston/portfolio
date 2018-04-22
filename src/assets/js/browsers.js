@@ -13,20 +13,30 @@ let createBrowser = (obj) => {
   }
 }
 
+let createTab = (obj) => {
+  let defaults = {
+    'open': false
+  }
+  return {
+    ...defaults,
+    ...obj
+  }
+}
+
 // all browser data
 export default {
   'portfolio': createBrowser({
-    'tabData': {
+    'tabData': createTab({
       icon: 'P', // todo: make icon an image / include a default image
-      label: 'my portfolio'
-    },
+      label: 'my portfolio',
+    }),
     'template': 'portfolio'
   }),
   'about': createBrowser({
-    'tabData': {
+    'tabData': createTab({
       icon: 'A',
-      label: 'about me'
-    },
+      label: 'about me',
+    }),
     'template': 'about'
   })
 }

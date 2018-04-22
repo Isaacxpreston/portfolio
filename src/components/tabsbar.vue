@@ -14,8 +14,23 @@
   import emit from './mixins/emit'
 
   export default {
-    props: ['tabs'],
-    mixins: [emit]
+    props: ['browserData'],
+    mixins: [emit],
+    computed: {
+      // only display tabs where open = true
+      tabs () {
+        let openTabs = []
+        for (let key in this.browserData) {
+          if(this.browserData[key]['tabData']['open']) {
+            openTabs.push({
+              template: this.browserData[key]['template'],
+              ...this.browserData[key]['tabData']
+            })
+          }
+        }
+        return openTabs
+      }
+    }
   }
 
 </script>
