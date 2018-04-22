@@ -2,12 +2,13 @@
   <!-- browser -->
   <div class="browser" :class="[browserClass]" @click="emit('bringToFront', [view])">
     <div class="topbar">
-      <div class="topbar__icon topbar__icon--minimize" @click="emit('minimizeBrowser', browserArgs)">m</div>
+      <div class="topbar__icon topbar__icon--minimize" @click="emit('minimizeBrowser', [view])">m</div>
       <div class="topbar__icon topbar__icon--fullscreen" @click="emit('toggleFullscreenBrowser', browserArgs)">{{fullscreenIcon}}</div>
-      <div class="topbar__icon topbar__icon--close" @click="emit('closeBrowser', browserArgs)">X</div>
+      <div class="topbar__icon topbar__icon--close" @click="emit('closeBrowser', [view])">X</div>
     </div>
     <div class="browser__content">
       <!-- browser content from props -->
+      <!-- todo: move navigation out as separate component -->
       <component :is="view" />
     </div>
   </div>

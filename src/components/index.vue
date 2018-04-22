@@ -4,12 +4,12 @@
     <!-- desktop icon -->
     <div class="icons-container">
       <div class="icon"></div>
-      <p @click="openBrowser('p', 'portfolio')">open p</p>
+      <p @click="openBrowser('portfolio')">open p</p>
     </div>
 
     <div class="icons-container">
       <div class="icon"></div>
-      <p @click="openBrowser('a', 'about')">open a</p>
+      <p @click="openBrowser('about')">open a</p>
     </div>
 
     <!-- browser windows -->
@@ -22,14 +22,15 @@
     <!-- start menu -->
     <div class="menubar">
 
-      <div class="start" @click="toggleNavigation">
+      <!-- start button -->
+      <div class="menubar__start" @click="toggleNavigation">
         <p>Start</p>
       </div>
 
-      <!-- tabs -->
+      <!-- browser tabs -->
       <tabsbar :tabs="tabs" @change="applyChange" />
 
-      <!-- menu nav -->
+      <!-- menu navigation -->
       <menuNav :showNavigation="showNavigation" />
 
     </div>
@@ -51,75 +52,81 @@
             'hidden': true,
             'browser--fullscreen': false,
             'browser--top': false,
-            'tab': 'p',
+            'tabData': {
+              icon: 'P',
+              label: 'my portfolio'
+            },
             'template': 'portfolio'
           },
           'about': {
             'hidden': true,
             'browser--fullscreen': false,
             'browser--top': false,
-            'tab': 'a',
+            'tabData': {
+              icon: 'A',
+              label: 'about me'
+            },
             'template': 'about'
           }
         },
         showNavigation: false,
-        tabs: [
-          // {
-          //   title: 'e',
-          //   template: 'example'
-          // }, 
-        ]
+        tabs: []
       }
     },
     computed: {
-      fullscreenIcon() {
-        return this.browserClass.portfolio['browser--fullscreen'] ? '-' : '+'
-      }
     },
     methods: {
       applyChange(callback, args) {
         this[callback].apply(null, args)
       },
-      openBrowser(openTab, browserTemplate) {
+      openBrowser(browserTemplate) {
 
         // return if does not exist
         if (!this.browserClass[browserTemplate]) return
 
         // show browser
+        console.log('opening', browserTemplate)
         this.browserClass[browserTemplate].hidden = false
 
         // add to tabs bar if not already open
-        let flag = false
-        let exists = false
+        let alreadyOpen = false
+        let tabData = this.browserClass[browserTemplate]['tabData']
+
         for (let i = 0; i < this.tabs.length; i++) {
-          if (this.tabs[i].title === openTab) {
-            flag = true
+          if (this.tabs[i].template === browserTemplate) {
+            alreadyOpen = true
           }
         }
-        if (!flag) {
+        if (!alreadyOpen) {
+
           this.tabs.push({
-            title: openTab,
-            template: browserTemplate
+            template: browserTemplate,
+            ...tabData
           })
         }
 
-        // bring to front on open
+        // bring browser to front on open
         this.bringToFront(browserTemplate)
       },
-      closeBrowser(closedTab, closedBrowser) {
-        console.log('closing', closedBrowser)
-        closedTab = closedTab || ''
-        this.browserClass[closedBrowser].hidden = true
+      closeBrowser(browserTemplate) {
+        // hide browser and remove from tabs array
+        console.log('closing', browserTemplate)
+
+        // call hide browser method
+        this.minimizeBrowser(browserTemplate)
+
+        // remove from tabs array
         this.tabs = this.tabs.filter((item) => {
-          return item.title !== closedTab
+          return item.template !== browserTemplate
         })
       },
-      minimizeBrowser(closedTab, closedBrowser) {
-        console.log('minimizing', closedBrowser)
-        this.browserClass[closedBrowser].hidden = true
+      minimizeBrowser(browserTemplate) {
+        // hide browser without removing from tabs array
+        console.log('minimizing', browserTemplate)
+        this.browserClass[browserTemplate].hidden = true
       },
       bringToFront(browserTemplate) {
-        // add z-index class to browser on click or open.
+        // add z-index class to browser on click or open
         console.log('bringing to front', browserTemplate)
         // remove class from all templates first
         for (let key in this.browserClass) {
@@ -128,9 +135,9 @@
         // add class
         this.browserClass[browserTemplate]['browser--top'] = true
       },
-      toggleFullscreenBrowser(openTab, openBrowser) {
-        // todo: make this work withi more than just portfolio
-        this.browserClass[openBrowser]['browser--fullscreen'] = !this.browserClass[openBrowser]['browser--fullscreen']
+      toggleFullscreenBrowser(openTab, browserTemplate) {
+        // toggle fullscreen class
+        this.browserClass[browserTemplate]['browser--fullscreen'] = !this.browserClass[browserTemplate]['browser--fullscreen']
       },
       toggleNavigation() {
         this.showNavigation = !this.showNavigation ? true : false
@@ -244,9 +251,10 @@
     width: 100%;
     height: 60px;
     background: rgba(255, 0, 0, 0.15);
+    z-index: 3;
   }
 
-  .start {
+  .menubar__start {
     position: absolute;
     top: 0;
     left: 0;

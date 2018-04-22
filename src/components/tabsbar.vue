@@ -1,9 +1,10 @@
 <template>
+  <!-- todo: add icon support -->
   <div class="tabsbar" v-if="tabs.length">
-    <div v-for="(item, index) in tabs" :key="index" class="tabsbar__tab" @click="emit('openBrowser', [item.title, item.template])">
-      <p>{{item.title}}</p>
+    <div v-for="(item, index) in tabs" :key="index" class="tabsbar__tab" @click="emit('openBrowser', [item.template])">
+      <p>{{item.icon}}</p>
       <div class="tabsbar__label">
-        <p>tab title placeholder</p>
+        <p>{{item.label}}</p>
       </div>
     </div>
   </div>
