@@ -14,9 +14,10 @@ Features
 Data
   Make tabsbar anbd menuNav pull from same data source
     possibly restructure so there is a 'show on tabsbar' t/f boolean instead of push/filter from array in current setup.
-    make navigation a separate component, possibly a 'navigation' or 'children' child object on every browser template, that references other templates.
+    make navigation a separate component (instead of in portfolio template), possibly a 'navigation' or 'children' child object on every browser template, that references other templates.
 
 
 Bugs
   bring window to front when clicked
   Need more precise scaling on modules when resizing browser window
+  resize is acting buggy from top left/right corners

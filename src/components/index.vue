@@ -2,6 +2,7 @@
   <div class="main-container">
 
     <!-- desktop icon -->
+    <!-- todo: iterate over data -->
     <div class="icons-container">
       <div class="icon"></div>
       <p @click="openBrowser('portfolio')">open p</p>
@@ -13,11 +14,7 @@
     </div>
 
     <!-- browser windows -->
-    <browser :browserClass="browserClass['portfolio']" @change="applyChange" :view="browserClass['portfolio']['template']" :tab="browserClass['portfolio']['tab']"
-    />
-
-    <browser :browserClass="browserClass['about']" @change="applyChange" :view="browserClass['about']['template']" :tab="browserClass['about']['tab']"
-    />
+    <browser v-for="(browser, index) in browsers" :key="index" :browserClass="browser" :view="browser['template']" :tab="browser['tab']" @change="applyChange" />
 
     <!-- start menu -->
     <div class="menubar">
@@ -31,6 +28,7 @@
       <tabsbar :tabs="tabs" @change="applyChange" />
 
       <!-- menu navigation -->
+      <!-- todo: iterate over data also! -->
       <menuNav :showNavigation="showNavigation" />
 
     </div>
@@ -43,32 +41,12 @@
   import browser from './browser'
   import tabsbar from './tabsbar'
   import menuNav from './menuNav'
+  import browsers from '../assets/js/browsers'
 
   export default {
     data() {
       return {
-        browserClass: {
-          'portfolio': {
-            'hidden': true,
-            'browser--fullscreen': false,
-            'browser--top': false,
-            'tabData': {
-              icon: 'P',
-              label: 'my portfolio'
-            },
-            'template': 'portfolio'
-          },
-          'about': {
-            'hidden': true,
-            'browser--fullscreen': false,
-            'browser--top': false,
-            'tabData': {
-              icon: 'A',
-              label: 'about me'
-            },
-            'template': 'about'
-          }
-        },
+        browsers,
         showNavigation: false,
         tabs: []
       }
@@ -82,15 +60,15 @@
       openBrowser(browserTemplate) {
 
         // return if does not exist
-        if (!this.browserClass[browserTemplate]) return
+        if (!this.browsers[browserTemplate]) return
 
         // show browser
         console.log('opening', browserTemplate)
-        this.browserClass[browserTemplate].hidden = false
+        this.browsers[browserTemplate].hidden = false
 
         // add to tabs bar if not already open
         let alreadyOpen = false
-        let tabData = this.browserClass[browserTemplate]['tabData']
+        let tabData = this.browsers[browserTemplate]['tabData']
 
         for (let i = 0; i < this.tabs.length; i++) {
           if (this.tabs[i].template === browserTemplate) {
@@ -123,21 +101,21 @@
       minimizeBrowser(browserTemplate) {
         // hide browser without removing from tabs array
         console.log('minimizing', browserTemplate)
-        this.browserClass[browserTemplate].hidden = true
+        this.browsers[browserTemplate].hidden = true
       },
       bringToFront(browserTemplate) {
         // add z-index class to browser on click or open
         console.log('bringing to front', browserTemplate)
         // remove class from all templates first
-        for (let key in this.browserClass) {
-          this.browserClass[key]['browser--top'] = false
+        for (let key in this.browsers) {
+          this.browsers[key]['browser--top'] = false
         }
         // add class
-        this.browserClass[browserTemplate]['browser--top'] = true
+        this.browsers[browserTemplate]['browser--top'] = true
       },
       toggleFullscreenBrowser(openTab, browserTemplate) {
         // toggle fullscreen class
-        this.browserClass[browserTemplate]['browser--fullscreen'] = !this.browserClass[browserTemplate]['browser--fullscreen']
+        this.browsers[browserTemplate]['browser--fullscreen'] = !this.browsers[browserTemplate]['browser--fullscreen']
       },
       toggleNavigation() {
         this.showNavigation = !this.showNavigation ? true : false
