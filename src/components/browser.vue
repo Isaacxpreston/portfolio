@@ -1,6 +1,6 @@
 <template>
   <!-- browser -->
-  <div class="browser" :class="[browserClass]">
+  <div class="browser" :class="[browserClass]" @click="emit('bringToFront', [view])">
     <div class="topbar">
       <div class="topbar__icon topbar__icon--minimize" @click="emit('minimizeBrowser', browserArgs)">m</div>
       <div class="topbar__icon topbar__icon--fullscreen" @click="emit('toggleFullscreenBrowser', browserArgs)">{{fullscreenIcon}}</div>
@@ -17,12 +17,13 @@
 <script>
   import interact from 'interactjs'
   import portfolio from './portfolio'
+  import about from './about'
   import emit from './mixins/emit'
 
   export default {
     props: ['browserClass', 'view', 'tab'],
     mixins: [emit],
-    data () {
+    data() {
       return {
         browserArgs: [
           this.tab,
@@ -139,14 +140,14 @@
 
     },
     components: {
-      portfolio
+      portfolio,
+      about
     }
   }
 
 </script>
 
 <style scoped lang='scss'>
-
   .browser {
     position: absolute;
     top: 0;
@@ -158,12 +159,15 @@
     border: 12px solid rgba(255, 0, 0, 0.5);
     max-width: 100%;
     max-height: 100%;
-    &--fullscreen,
-      {
+    z-index: 1;
+    &--fullscreen {
       width: 100% !important;
       height: 100% !important;
       transform: none !important;
       transition: width 0.4s ease, height 0.4s ease, transform 0.4s ease;
+    }
+    &--top {
+      z-index: 2;
     }
     @media screen and (max-width: 767px) {
       // todo: find a better way to write this

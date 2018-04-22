@@ -50,12 +50,14 @@
           'portfolio': {
             'hidden': true,
             'browser--fullscreen': false,
+            'browser--top': false,
             'tab': 'p',
             'template': 'portfolio'
           },
           'about': {
             'hidden': true,
             'browser--fullscreen': false,
+            'browser--top': false,
             'tab': 'a',
             'template': 'about'
           }
@@ -78,12 +80,15 @@
       applyChange(callback, args) {
         this[callback].apply(null, args)
       },
-      openBrowser(openTab, openBrowser) {
+      openBrowser(openTab, browserTemplate) {
 
         // return if does not exist
-        if (!this.browserClass[openBrowser]) return
+        if (!this.browserClass[browserTemplate]) return
 
-        this.browserClass[openBrowser].hidden = false
+        // show browser
+        this.browserClass[browserTemplate].hidden = false
+
+        // add to tabs bar if not already open
         let flag = false
         let exists = false
         for (let i = 0; i < this.tabs.length; i++) {
@@ -94,9 +99,12 @@
         if (!flag) {
           this.tabs.push({
             title: openTab,
-            template: openBrowser
+            template: browserTemplate
           })
         }
+
+        // bring to front on open
+        this.bringToFront(browserTemplate)
       },
       closeBrowser(closedTab, closedBrowser) {
         console.log('closing', closedBrowser)
@@ -109,6 +117,16 @@
       minimizeBrowser(closedTab, closedBrowser) {
         console.log('minimizing', closedBrowser)
         this.browserClass[closedBrowser].hidden = true
+      },
+      bringToFront(browserTemplate) {
+        // add z-index class to browser on click or open.
+        console.log('bringing to front', browserTemplate)
+        // remove class from all templates first
+        for (let key in this.browserClass) {
+          this.browserClass[key]['browser--top'] = false
+        }
+        // add class
+        this.browserClass[browserTemplate]['browser--top'] = true
       },
       toggleFullscreenBrowser(openTab, openBrowser) {
         // todo: make this work withi more than just portfolio
