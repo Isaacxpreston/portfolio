@@ -11,8 +11,10 @@
       <!-- browser content from props -->
       <!-- todo: move navigation out as separate component -->
       <navigation v-if="browserData['children']" :data="browserData['children']" />
+
       <div class="browser__content-inner" :class="browserContentClass">
-        <component :is="browserData['template']" />
+        <!-- todo: make responsive to navigation -->
+        <component :is="currentTemplate['template']" :content="currentTemplate['content']" />
       </div>
     </div>
   </div>
@@ -29,6 +31,14 @@
   export default {
     props: ['browserData', 'view'],
     mixins: [emit],
+    data () {
+      return {
+        currentTemplate: {
+          'template': this.browserData['template'],
+          'content': this.browserData['content']
+        }
+      }
+    },
     computed: {
       fullscreenIcon() {
         return this.browserData['browser--fullscreen'] ? '-' : '+'

@@ -1,51 +1,24 @@
 <template>
-  <div class="portfolioContainer">
-    <!-- <navigation /> -->
-    <!-- <div class="portfolioWindow"> -->
-      <p>content here</p>
-    <!-- </div> -->
+  <div>
+    <h1>{{content.header}}</h1>
+    <p>{{content.copy}}</p>
   </div>
 </template>
 
 <script>
-  // import interact from 'interactjs'
-  // import navigation from './navigation'
-
-  // export default {
-  //   data () {
-  //     return {
-  //       // data here
-  //     }
-  //   },
-  //   // components: {
-  //   //   navigation
-  //   // }
-  // }
-
+  export default {
+    props: ['content']
+  }
 </script>
 
 <style scoped lang="scss">
-  .portfolioContainer {
-    position: absolute;
-    // background: rgba(255, 0, 0, 0.1);
-    background: white;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-
-  // .portfolioWindow {
+  // .portfolioContainer {
   //   position: absolute;
-  //   padding: 12px;
-  //   box-sizing: border-box;
-  //   background: rgba(255, 0, 0, 0.5);
+  //   // background: rgba(255, 0, 0, 0.1);
+  //   background: white;
   //   top: 0;
-  //   right: 0;
-  //   width: calc(100% - 200px);
+  //   left: 0;
+  //   width: 100%;
   //   height: 100%;
-  //   overflow: auto;
-  //   z-index: 1;
   // }
-
 </style>

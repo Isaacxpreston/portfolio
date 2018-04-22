@@ -28,10 +28,11 @@
         }
       }
     },
-    // mounted () {
-    //   console.log('mounted with')
-    //   console.log(this.data)
-    // }
+    mounted () {
+      console.log('mounted with')
+      console.log(this.data['children'])
+      // console.log(this.data['tabData']['label'])
+    }
   }
 
 </script>

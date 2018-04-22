@@ -33,17 +33,17 @@ const createTab = (obj) => {
 let contactChildren = {
   'linkedIn': createBrowser({
     'tabData': createTab({
-      'label:': 'LinkedIn'
+      'label': 'LinkedIn'
     })
   }),
   'gitHub': {
     'tabData': createTab({
-      'label:': 'GitHub'
+      'label': 'GitHub'
     })
   },
   'email': {
     'tabData': createTab({
-      'label:': 'Email'
+      'label': 'Email'
     })
   }
 }
@@ -105,6 +105,10 @@ export default {
       'label': 'my portfolio',
     }),
     'template': 'portfolio',
+    'content': {
+      'header': 'portfolio',
+      'copy': 'content here'
+    },
   }),
   'about': createBrowser({
     'tabData': createTab({
@@ -115,6 +119,7 @@ export default {
     'content': {
       'header': 'about me',
       'copy': '<---- click on a link to the left to get started'
+      // todo: potentially just have icons on 'parent' browsers like a file explorer would
     },
     'children': aboutChildren
   })
