@@ -83,7 +83,7 @@
         this.minimizeBrowser(browserTemplate)
 
         // close tab
-        this.browserTemplate['tabData']['open'] = false
+        this.browsers[browserTemplate]['tabData']['open'] = false
       },
       minimizeBrowser(browserTemplate) {
         // hide browser without closing tab

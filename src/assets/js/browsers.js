@@ -1,11 +1,13 @@
-// method to create object with default values
-let createBrowser = (obj) => {
-  let defaults = {
+// create data with default values
+
+const createBrowser = (obj) => {
+  const defaults = {
     'classes': {
       'hidden': true,
       'browser--fullscreen': false,
       'browser--top': false,
     },
+    children: false
   }
   return {
     ...defaults,
@@ -13,8 +15,8 @@ let createBrowser = (obj) => {
   }
 }
 
-let createTab = (obj) => {
-  let defaults = {
+const createTab = (obj) => {
+  const defaults = {
     'open': false
   }
   return {
@@ -23,20 +25,75 @@ let createTab = (obj) => {
   }
 }
 
+// todo: secondary (child) browsers object(s), or bool to show/hide on main menu
+
+let aboutChildren = {
+  'bio': createBrowser({
+    'tabData': createTab({
+      'icon': 'B',
+      'label': 'biography',
+    }),
+    'template': 'about',
+    'content': {
+      'header': 'my biography',
+      'copy': 'biography copy will go here'
+    }
+  }),
+  'resume': createBrowser({
+    'tabData': createTab({
+      'icon': 'R',
+      'label': 'resume',
+    }),
+    'template': 'about',
+    'content': {
+      'header': 'my resume',
+      'copy': 'link to my resume will go here'
+    }
+  }),
+  'contact': createBrowser({
+    'tabData': createTab({
+      'icon': 'C',
+      'label': 'contact',
+    }),
+    'template': 'about',
+    'content': {
+      'header': 'contact info',
+      'copy': 'contact links will go here'
+    }
+  }),
+  'credits': createBrowser({
+    'tabData': createTab({
+      'icon': 'C',
+      'label': 'website credits',
+    }),
+    'template': 'about',
+    'content': {
+      'header': 'about this website/credits',
+      'copy': 'made with vue.js and interactjs, etc.'
+    }
+  })
+}
+
+
 // all browser data
 export default {
   'portfolio': createBrowser({
     'tabData': createTab({
-      icon: 'P', // todo: make icon an image / include a default image
-      label: 'my portfolio',
+      'icon': 'P', // todo: make icon an image / include a default image
+      'label': 'my portfolio',
     }),
-    'template': 'portfolio'
+    'template': 'portfolio',
   }),
   'about': createBrowser({
     'tabData': createTab({
-      icon: 'A',
-      label: 'about me',
+      'icon': 'A',
+      'label': 'about me',
     }),
-    'template': 'about'
+    'template': 'about',
+    'content': {
+      'header': 'about me',
+      'copy': '<---- click on a link to the left to get started'
+    },
+    'children': aboutChildren
   })
 }

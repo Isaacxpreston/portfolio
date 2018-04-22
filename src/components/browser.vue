@@ -10,7 +10,10 @@
     <div class="browser__content">
       <!-- browser content from props -->
       <!-- todo: move navigation out as separate component -->
-      <component :is="browserData['template']" />
+      <navigation v-if="browserData['children']" />
+      <div class="browser__content-inner" :class="browserContentClass">
+        <component :is="browserData['template']" />
+      </div>
     </div>
   </div>
 </template>
@@ -19,6 +22,7 @@
 <script>
   import interact from 'interactjs'
   import portfolio from './portfolio'
+  import navigation from './navigation'
   import about from './about'
   import emit from './mixins/emit'
 
@@ -28,6 +32,9 @@
     computed: {
       fullscreenIcon() {
         return this.browserData['browser--fullscreen'] ? '-' : '+'
+      },
+      browserContentClass () {
+        return this.browserData['children'] ? 'browser__content-inner--navigation-visible' : ''
       }
     },
     mounted() {
@@ -140,6 +147,7 @@
 
     },
     components: {
+      navigation,
       portfolio,
       about
     }
@@ -187,6 +195,19 @@
     margin-top: 48px;
     overflow: scroll;
     background: white;
+  }
+
+  .browser__content-inner {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 0, 0, 0.15);
+    &--navigation-visible {
+      width: calc(100% - 200px);
+      margin-left: 200px;
+    }
   }
 
   .topbar {
