@@ -50,7 +50,6 @@
     },
     methods: {
       changeCurrentTemplate (data) {
-        console.log('template change hit')
         this.currentTemplate = {
           'template': data['template'],
           'content': data['content']

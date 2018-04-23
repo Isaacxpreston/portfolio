@@ -1,6 +1,6 @@
 <template>
   <div class="navigation__item">
-    <h4 @click="testFunc">{{data['tabData']['label']}} <small @click="toggleExpanded">{{expandText}}</small></h4>
+    <h4 @click="emit('changeCurrentTemplate', [data])">{{data['tabData']['label']}} <small @click="toggleExpanded">{{expandText}}</small></h4>
     <navigationItem v-if="data['children']" v-for="(item, index) in data['children']" :key="index" :data="item" v-show="expanded" @change="emit" />
   </div>
 </template>
@@ -24,18 +24,6 @@
       toggleExpanded () {
         this.expanded = !this.expanded
       },
-      testFunc () {
-
-        
-        
-        console.log('nav item clicked')
-        console.log(this.data['tabData']['label'])
-        console.log(this.data)
-        // this.emit('changeCurrentTemplate', [this.data])
-
-        this.$emit('change', 'changeCurrentTemplate', [this.data])
-        // e.stopPropagation()
-      }
     },
     computed: {
       expandText () {

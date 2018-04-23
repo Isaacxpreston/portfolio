@@ -1,6 +1,6 @@
 <template>
   <nav class="navigation">
-    <navigationItem v-for="(item, index) in data" :key="index" :data="item" @change="testFromNav" />
+    <navigationItem v-for="(item, index) in data" :key="index" :data="item" @change="emit" />
   </nav>
 </template>
 
@@ -16,14 +16,6 @@ export default {
   components: {
     navigationItem
   },
-  methods: {
-    testFromNav (callback, args) {
-      console.log('nav hit with', callback, args)
-      this.emit(callback, args)
-
-    }
-  }
-
 }
 </script>
 
