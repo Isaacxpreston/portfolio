@@ -8,9 +8,9 @@
       <div class="topbar__icon topbar__icon--close" @click="emit('closeBrowser', [browserData['template']])">X</div>
     </div>
     <div class="browser__content">
+      
       <!-- browser content from props -->
-      <!-- todo: move navigation out as separate component -->
-      <navigation v-if="browserData['children']" :data="browserData['children']" />
+      <navigation v-if="browserData['children']" :data="browserData['children']" @change="applyChange" />
 
       <div class="browser__content-inner" :class="browserContentClass">
         <!-- todo: make responsive to navigation -->
@@ -27,10 +27,11 @@
   import navigation from './navigation'
   import about from './about'
   import emit from './mixins/emit'
+  import applyChange from './mixins/applyChange'
 
   export default {
     props: ['browserData', 'view'],
-    mixins: [emit],
+    mixins: [emit, applyChange],
     data () {
       return {
         currentTemplate: {
@@ -45,6 +46,15 @@
       },
       browserContentClass () {
         return this.browserData['children'] ? 'browser__content-inner--navigation-visible' : ''
+      }
+    },
+    methods: {
+      changeCurrentTemplate (data) {
+        console.log('template change hit')
+        this.currentTemplate = {
+          'template': data['template'],
+          'content': data['content']
+        }
       }
     },
     mounted() {

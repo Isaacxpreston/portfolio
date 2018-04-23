@@ -1,14 +1,16 @@
 <template>
   <div class="navigation__item">
-    <h4 @click="expanded = !expanded">{{data['tabData']['label']}} <small>{{expandText}}</small></h4>
-    <navigationItem v-if="data['children']" v-for="(item, index) in data['children']" :key="index" :data="item" v-show="expanded" />
+    <h4 @click="testFunc">{{data['tabData']['label']}} <small @click="toggleExpanded">{{expandText}}</small></h4>
+    <navigationItem v-if="data['children']" v-for="(item, index) in data['children']" :key="index" :data="item" v-show="expanded" @change="emit" />
   </div>
 </template>
 
 <script>
   import navigationItem from './navigationItem'
+  import emit from './mixins/emit'
 
   export default {
+    mixins: [emit],
     props: ['data'],
     // name is needed for recursive components
     // https://vuejs.org/v2/guide/components-edge-cases.html#Recursive-Components
@@ -16,6 +18,23 @@
     data () {
       return {
         expanded: false
+      }
+    },
+    methods: {
+      toggleExpanded () {
+        this.expanded = !this.expanded
+      },
+      testFunc () {
+
+        
+        
+        console.log('nav item clicked')
+        console.log(this.data['tabData']['label'])
+        console.log(this.data)
+        // this.emit('changeCurrentTemplate', [this.data])
+
+        this.$emit('change', 'changeCurrentTemplate', [this.data])
+        // e.stopPropagation()
       }
     },
     computed: {
@@ -27,11 +46,6 @@
           return ''
         }
       }
-    },
-    mounted () {
-      console.log('mounted with')
-      console.log(this.data['children'])
-      // console.log(this.data['tabData']['label'])
     }
   }
 

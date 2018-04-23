@@ -1,18 +1,29 @@
 <template>
   <nav class="navigation">
-    <navigationItem v-for="(item, index) in data" :key="index" :data="item" />
+    <navigationItem v-for="(item, index) in data" :key="index" :data="item" @change="testFromNav" />
   </nav>
 </template>
 
 <script>
 
 import navigationItem from './navigationItem'
+import emit from './mixins/emit'
+import applyChange from './mixins/applyChange'
 
 export default {
+  mixins: [emit, applyChange],
   props: ['data'],
   components: {
     navigationItem
   },
+  methods: {
+    testFromNav (callback, args) {
+      console.log('nav hit with', callback, args)
+      this.emit(callback, args)
+
+    }
+  }
+
 }
 </script>
 

@@ -34,7 +34,12 @@ let contactChildren = {
   'linkedIn': createBrowser({
     'tabData': createTab({
       'label': 'LinkedIn'
-    })
+    }),
+    'template': 'about',
+    'content': {
+      'header': 'my linkedin',
+      'copy': 'link to my linkedin will go here'
+    }
   }),
   'gitHub': {
     'tabData': createTab({

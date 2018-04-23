@@ -36,7 +36,10 @@
   import menuNav from './menuNav'
   import browsers from '../assets/js/browsers'
 
+  import applyChange from './mixins/applyChange'
+
   export default {
+    mixins: [applyChange],
     data() {
       return {
         browsers,
@@ -48,9 +51,7 @@
     },
     computed: {},
     methods: {
-      applyChange(callback, args) {
-        this[callback].apply(null, args)
-      },
+
       //
       // browser methods //
       //
