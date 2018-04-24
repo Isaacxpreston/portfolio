@@ -3,15 +3,16 @@
   <div class="tabsbar" v-if="tabs.length">
     <div v-for="(item, index) in tabs" :key="index" class="tabsbar__tab" @click="emit('openBrowser', [item.template])">
       <p>{{item.icon}}</p>
-      <div class="tabsbar__label">
-        <p>{{item.label}}</p>
-      </div>
+
+      <itemLabel>{{item.label}}</itemLabel>
+
     </div>
   </div>
 </template>
 
 <script>
   import emit from './mixins/emit'
+  import itemLabel from './itemLabel'
 
   export default {
     props: ['browserData'],
@@ -30,6 +31,9 @@
         }
         return openTabs
       }
+    },
+    components: {
+      itemLabel
     }
   }
 
@@ -66,9 +70,9 @@
     &:hover {
       transform: scale(1.25) translateY(-4px);
       transition-delay: 0s;
-      .tabsbar__label {
+      .item-label {
         opacity: 1;
-        transition-delay: 0.4s;
+        transition-delay: 0.2s;
       }
     }
     >p {
@@ -79,29 +83,6 @@
       right: 0;
       margin: auto;
       height: 24px;
-    }
-  }
-
-  .tabsbar__label {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    opacity: 0;
-    padding: 4px;
-    pointer-events: none;
-    transform: translate(-50%, -40px) scale(0.8); // reverse 1.25 scale from parent back to 1
-    background: rgba(255, 0, 0, 0.25);
-    ::after {
-      content: ' ';
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translate(-50%, 10px);
-      width: 0;
-      height: 0;
-      border-left: 10px solid transparent;
-      border-right: 10px solid transparent;
-      border-top: 10px solid rgba(255, 0, 0, 0.25);
     }
   }
 

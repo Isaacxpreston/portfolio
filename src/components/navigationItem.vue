@@ -1,7 +1,7 @@
 <template>
-  <div class="navigation__item">
-    <h4 @click="emit('changeCurrentTemplate', [parentTemplate, data])">{{data['tabData']['label']}} <small @click="toggleExpanded">{{expandText}}</small></h4>
-    <navigationItem v-if="data['children']" v-for="(item, index) in data['children']" :key="index" :data="item" v-show="expanded" :parentTemplate="parentTemplate" @change="emit" />
+  <div class="navigation__item" :class="classes">
+    <h4 @click="toggleNavigationItem">{{data['tabData']['label']}} <small>{{expandText}}</small></h4>
+    <navigationItem v-if="data['children']" v-for="(item, index) in data['children']" :key="index" :data="item" :parentTemplate="parentTemplate" @change="emit" />
   </div>
 </template>
 
@@ -17,13 +17,20 @@
     name: 'navigationItem',
     data () {
       return {
-        expanded: false
+        classes: {
+          expanded: false
+        }
       }
     },
     methods: {
       toggleExpanded () {
-        this.expanded = !this.expanded
+        // todo: handle expanded in browsers.js also
+        this.classes.expanded = !this.classes.expanded
       },
+      toggleNavigationItem () {
+        this.toggleExpanded ()
+        this.emit('changeCurrentTemplate', [this.parentTemplate, this.data])
+      }
     },
     computed: {
       expandText () {
@@ -72,6 +79,17 @@
         font-size: 8px;
         display: inline-block;
         vertical-align: middle;
+      }
+    }
+    >div {
+      display: none;
+    }
+    &.expanded {
+      >h4 {
+        background: rgba(255, 255, 255, 0.25);
+      }
+      >div {
+        display: block;
       }
     }
   }

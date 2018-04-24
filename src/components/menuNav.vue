@@ -29,11 +29,7 @@
 
   export default {
     mixins: [emit],
-    props: ['browserData'],
-    mounted() {
-      console.log('from menuNav mount')
-      console.log(this.browserData)
-    }
+    props: ['browserData']
   }
 
 </script>

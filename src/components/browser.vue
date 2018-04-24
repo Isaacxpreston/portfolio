@@ -3,9 +3,18 @@
   <div class="browser" :class="[browserData.classes]" @click="emit('bringToFront', [browserData.template])">
     <div class="topbar">
       <div class="topbar__label">{{browserData.tabData.label}}</div>
-      <div class="topbar__icon topbar__icon--minimize" @click="emit('minimizeBrowser', [browserData.template])">m</div>
-      <div class="topbar__icon topbar__icon--fullscreen" @click="emit('toggleFullscreenBrowser', [browserData.template])">{{fullscreenIcon}}</div>
-      <div class="topbar__icon topbar__icon--close" @click="emit('closeBrowser', [browserData.template])">X</div>
+      <div class="topbar__icon topbar__icon--minimize" @click="emit('minimizeBrowser', [browserData.template])">
+        <span>m</span>
+        <itemLabel>minimize</itemLabel>
+      </div>
+      <div class="topbar__icon topbar__icon--fullscreen" @click="emit('toggleFullscreenBrowser', [browserData.template])">
+        <span>{{fullscreenIcon}}</span>
+        <itemLabel>fullscreen</itemLabel>
+      </div>
+      <div class="topbar__icon topbar__icon--close" @click="emit('closeBrowser', [browserData.template])">
+        <span>X</span>
+        <itemLabel>close</itemLabel>
+      </div>
     </div>
     <div class="browser__content">
       
@@ -27,6 +36,7 @@
   import portfolio from './portfolio'
   import navigation from './navigation'
   import about from './about'
+  import itemLabel from './itemLabel'
   import emit from './mixins/emit'
   import applyChange from './mixins/applyChange'
 
@@ -44,7 +54,8 @@
     components: {
       navigation,
       portfolio,
-      about
+      about,
+      itemLabel
     }
   }
 
@@ -140,6 +151,13 @@
     }
     &--close {
       margin-right: 12px;
+    }
+    &:hover {
+      .item-label {
+        opacity: 1;
+        transition-delay: 0.2s;
+        transform: translate(-50%, -50px) scale(1);
+      }
     }
   }
 
