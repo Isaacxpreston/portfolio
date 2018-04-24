@@ -46,8 +46,6 @@
         browsers,
         // menuNav bool
         showNavigation: false,
-        // todo: set visible/hidden booleans on data itself instead of push/filter from array.
-        tabs: []
       }
     },
     computed: {},
@@ -57,8 +55,6 @@
       // browser methods //
       //
       openBrowser(browserTemplate, tabNavigatedTo) {
-
-        console.log('opening', browserTemplate)
 
         // return if does not exist
         if (!this.browsers[browserTemplate]) return
@@ -75,14 +71,16 @@
         // bring browser to front on open
         this.bringToFront(browserTemplate)
 
-        // click appropriate tab
+        // click appropriate tab from menuNav
+        // todo: handle clicking parent element
         if (tabNavigatedTo) {
-
+          // tabNavigatedTo = tabNavigatedTo || this.browsers[browserTemplate]
+          this.changeCurrentTemplate(browserTemplate, tabNavigatedTo)
         }
+
       },
       closeBrowser(browserTemplate) {
         // hide browser and close tab
-        console.log('closing', browserTemplate)
 
         // call hide browser method
         this.minimizeBrowser(browserTemplate)
@@ -92,12 +90,10 @@
       },
       minimizeBrowser(browserTemplate) {
         // hide browser without closing tab
-        console.log('minimizing', browserTemplate)
         this.browsers[browserTemplate]['classes']['hidden'] = true
       },
       bringToFront(browserTemplate) {
         // add z-index class to browser on click or open
-        console.log('bringing to front', browserTemplate)
 
         // remove class from all templates first
         for (let key in this.browsers) {
@@ -130,8 +126,8 @@
     },
     mounted() {
 
-
       // resize / reposition elements on window resize
+
       window.addEventListener('resize', () => {
 
         let elOffsetX = parseInt(document.querySelector('.browser').getAttribute('data-x')) || 0
@@ -152,6 +148,8 @@
         }
 
       })
+
+      // initialize interactjs
 
       function dragMoveListener(event) {
         var target = event.target,
