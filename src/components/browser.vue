@@ -1,21 +1,22 @@
 <template>
   <!-- browser -->
-  <div class="browser" :class="[browserData['classes']]" @click="emit('bringToFront', [browserData['template']])">
+  <div class="browser" :class="[browserData.classes]" @click="emit('bringToFront', [browserData.template])">
     <div class="topbar">
-      <div class="topbar__label">{{browserData['tabData']['label']}}</div>
-      <div class="topbar__icon topbar__icon--minimize" @click="emit('minimizeBrowser', [browserData['template']])">m</div>
-      <div class="topbar__icon topbar__icon--fullscreen" @click="emit('toggleFullscreenBrowser', [browserData['template']])">{{fullscreenIcon}}</div>
-      <div class="topbar__icon topbar__icon--close" @click="emit('closeBrowser', [browserData['template']])">X</div>
+      <div class="topbar__label">{{browserData.tabData.label}}</div>
+      <div class="topbar__icon topbar__icon--minimize" @click="emit('minimizeBrowser', [browserData.template])">m</div>
+      <div class="topbar__icon topbar__icon--fullscreen" @click="emit('toggleFullscreenBrowser', [browserData.template])">{{fullscreenIcon}}</div>
+      <div class="topbar__icon topbar__icon--close" @click="emit('closeBrowser', [browserData.template])">X</div>
     </div>
     <div class="browser__content">
       
       <!-- browser content from props -->
-      <navigation v-if="browserData['children']" :data="browserData['children']" @change="applyChange" />
+      <navigation v-if="browserData.children" :data="browserData.children" :parentTemplate="browserData.name" @change="emit" />
 
       <div class="browser__content-inner" :class="browserContentClass">
         <!-- todo: make responsive to navigation -->
-        <component :is="currentTemplate['template']" :content="currentTemplate['content']" />
+        <component :is="browserData.currentTemplate.template" :content="browserData.currentTemplate.content" />
       </div>
+
     </div>
   </div>
 </template>
@@ -30,16 +31,8 @@
   import applyChange from './mixins/applyChange'
 
   export default {
-    props: ['browserData', 'view'],
+    props: ['browserData'],
     mixins: [emit, applyChange],
-    data () {
-      return {
-        currentTemplate: {
-          'template': this.browserData['template'],
-          'content': this.browserData['content']
-        }
-      }
-    },
     computed: {
       fullscreenIcon() {
         return this.browserData['browser--fullscreen'] ? '-' : '+'
@@ -47,123 +40,6 @@
       browserContentClass () {
         return this.browserData['children'] ? 'browser__content-inner--navigation-visible' : ''
       }
-    },
-    methods: {
-      changeCurrentTemplate (data) {
-        this.currentTemplate = {
-          'template': data['template'],
-          'content': data['content']
-        }
-      }
-    },
-    mounted() {
-
-      // let ctx = this
-
-      // resize / reposition elements on window resize
-      window.addEventListener('resize', () => {
-
-        let elOffsetX = parseInt(document.querySelector('.browser').getAttribute('data-x')) || 0
-        let elOffsetY = parseInt(document.querySelector('.browser').getAttribute('data-y')) || 0
-        let elWidth = parseInt(window.getComputedStyle(document.querySelector('.browser'))['width'].replace(
-          'px', ''))
-        let elCombinedX = elOffsetX + elWidth
-
-        let containerWidth = parseInt(window.getComputedStyle(document.querySelector('.main-container'))['width']
-          .replace('px', ''))
-
-
-        if (elCombinedX > containerWidth) {
-          let newOffsetX = (containerWidth - elWidth) // - 24 // ?? not sure why I need 10px here.
-          document.querySelector('.browser').style.transform = 'translate(' + newOffsetX + 'px, ' + elOffsetY +
-            'px)'
-          document.querySelector('.browser').setAttribute('data-x', newOffsetX)
-        }
-
-      })
-
-      // todo: make a mixin.
-
-      function dragMoveListener(event) {
-
-        // emit z-index toggle from drag event as well as click
-
-        var target = event.target,
-          // keep the dragged position in the data-x/data-y attributes
-          x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
-          y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-
-        // translate the element
-        target.style.webkitTransform = target.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
-        // update the posiion attributes
-        target.setAttribute('data-x', x);
-        target.setAttribute('data-y', y);
-      }
-
-      //
-      // todo: initialize this once from index, instead of on every browser instance.
-
-      interact('.browser')
-        .draggable({
-          allowFrom: '.topbar, .icon',
-          onmove: dragMoveListener,
-          restrict: {
-            restriction: 'parent',
-            elementRect: {
-              top: 0,
-              left: 0,
-              bottom: 1,
-              right: 1
-            }
-          }
-        })
-      interact('.browser')
-        .resizable({
-
-          // resize from all edges and corners  
-          edges: {
-            left: true,
-            right: true,
-            bottom: true,
-            top: true
-          },
-
-          // keep the edges inside the parent
-          restrictEdges: {
-            outer: 'parent',
-            endOnly: true,
-          },
-
-          // minimum size
-          restrictSize: {
-            min: {
-              width: 400,
-              height: 250
-            },
-          },
-
-          inertia: false
-        })
-        .on('resizemove', function (event) {
-          var target = event.target,
-            x = (parseFloat(target.getAttribute('data-x')) || 0),
-            y = (parseFloat(target.getAttribute('data-y')) || 0);
-
-          // update the element's style
-          target.style.width = event.rect.width + 'px';
-          target.style.height = event.rect.height + 'px';
-
-          // translate when resizing from top or left edges
-          x += event.deltaRect.left;
-          y += event.deltaRect.top;
-
-          target.style.webkitTransform = target.style.transform =
-            'translate(' + x + 'px,' + y + 'px)';
-
-          target.setAttribute('data-x', x);
-          target.setAttribute('data-y', y);
-        })
-
     },
     components: {
       navigation,

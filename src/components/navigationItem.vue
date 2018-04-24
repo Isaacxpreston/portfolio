@@ -1,7 +1,7 @@
 <template>
   <div class="navigation__item">
-    <h4 @click="emit('changeCurrentTemplate', [data])">{{data['tabData']['label']}} <small @click="toggleExpanded">{{expandText}}</small></h4>
-    <navigationItem v-if="data['children']" v-for="(item, index) in data['children']" :key="index" :data="item" v-show="expanded" @change="emit" />
+    <h4 @click="emit('changeCurrentTemplate', [parentTemplate, data])">{{data['tabData']['label']}} <small @click="toggleExpanded">{{expandText}}</small></h4>
+    <navigationItem v-if="data['children']" v-for="(item, index) in data['children']" :key="index" :data="item" v-show="expanded" :parentTemplate="parentTemplate" @change="emit" />
   </div>
 </template>
 
@@ -11,7 +11,7 @@
 
   export default {
     mixins: [emit],
-    props: ['data'],
+    props: ['data', 'parentTemplate'],
     // name is needed for recursive components
     // https://vuejs.org/v2/guide/components-edge-cases.html#Recursive-Components
     name: 'navigationItem',
@@ -34,7 +34,7 @@
           return ''
         }
       }
-    }
+    },
   }
 
 </script>

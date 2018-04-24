@@ -19,7 +19,7 @@
       </div>
 
       <!-- browser tabs -->
-      <tabsbar  :browserData="browsers" @change="applyChange" />
+      <tabsbar :browserData="browsers" @change="applyChange" />
 
       <!-- menu navigation -->
       <menuNav @change="applyChange" :browserData="browsers" v-if="showNavigation" />
@@ -42,20 +42,21 @@
     mixins: [applyChange],
     data() {
       return {
+        // all browser data
         browsers,
         // menuNav bool
         showNavigation: false,
         // todo: set visible/hidden booleans on data itself instead of push/filter from array.
-        tabs: [] 
+        tabs: []
       }
     },
     computed: {},
     methods: {
-
+      // todo: make this a vuex store
       //
       // browser methods //
       //
-      openBrowser(browserTemplate) {
+      openBrowser(browserTemplate, tabNavigatedTo) {
 
         console.log('opening', browserTemplate)
 
@@ -73,6 +74,11 @@
 
         // bring browser to front on open
         this.bringToFront(browserTemplate)
+
+        // click appropriate tab
+        if (tabNavigatedTo) {
+
+        }
       },
       closeBrowser(browserTemplate) {
         // hide browser and close tab
@@ -103,7 +109,16 @@
       },
       toggleFullscreenBrowser(browserTemplate) {
         // toggle fullscreen class
-        this.browsers[browserTemplate]['classes']['browser--fullscreen'] = !this.browsers[browserTemplate]['classes']['browser--fullscreen']
+        this.browsers[browserTemplate]['classes']['browser--fullscreen'] = !this.browsers[browserTemplate]['classes'][
+          'browser--fullscreen'
+        ]
+      },
+      changeCurrentTemplate (browserTemplate, data) {
+        // change browser view on navigation click (fired in navigationItem.vue)
+        this.browsers[browserTemplate].currentTemplate = {
+          template: data.template,
+          content: data.content
+        }
       },
       //
       // end browser methods //
@@ -115,7 +130,28 @@
     },
     mounted() {
 
-      console.log(browsers)
+
+      // resize / reposition elements on window resize
+      window.addEventListener('resize', () => {
+
+        let elOffsetX = parseInt(document.querySelector('.browser').getAttribute('data-x')) || 0
+        let elOffsetY = parseInt(document.querySelector('.browser').getAttribute('data-y')) || 0
+        let elWidth = parseInt(window.getComputedStyle(document.querySelector('.browser'))['width'].replace(
+          'px', ''))
+        let elCombinedX = elOffsetX + elWidth
+
+        let containerWidth = parseInt(window.getComputedStyle(document.querySelector('.main-container'))['width']
+          .replace('px', ''))
+
+
+        if (elCombinedX > containerWidth) {
+          let newOffsetX = (containerWidth - elWidth) // - 24 // ?? not sure why I need 10px here.
+          document.querySelector('.browser').style.transform = 'translate(' + newOffsetX + 'px, ' + elOffsetY +
+            'px)'
+          document.querySelector('.browser').setAttribute('data-x', newOffsetX)
+        }
+
+      })
 
       function dragMoveListener(event) {
         var target = event.target,
@@ -142,6 +178,67 @@
               right: 1
             }
           }
+        })
+
+      interact('.browser')
+        .draggable({
+          allowFrom: '.topbar, .icon',
+          onmove: dragMoveListener,
+          restrict: {
+            restriction: 'parent',
+            elementRect: {
+              top: 0,
+              left: 0,
+              bottom: 1,
+              right: 1
+            }
+          }
+        })
+      interact('.browser')
+        .resizable({
+
+          // resize from all edges and corners  
+          edges: {
+            left: true,
+            right: true,
+            bottom: true,
+            top: true
+          },
+
+          // keep the edges inside the parent
+          restrictEdges: {
+            outer: 'parent',
+            endOnly: true,
+          },
+
+          // minimum size
+          restrictSize: {
+            min: {
+              width: 400,
+              height: 250
+            },
+          },
+
+          inertia: false
+        })
+        .on('resizemove', function (event) {
+          var target = event.target,
+            x = (parseFloat(target.getAttribute('data-x')) || 0),
+            y = (parseFloat(target.getAttribute('data-y')) || 0);
+
+          // update the element's style
+          target.style.width = event.rect.width + 'px';
+          target.style.height = event.rect.height + 'px';
+
+          // translate when resizing from top or left edges
+          x += event.deltaRect.left;
+          y += event.deltaRect.top;
+
+          target.style.webkitTransform = target.style.transform =
+            'translate(' + x + 'px,' + y + 'px)';
+
+          target.setAttribute('data-x', x);
+          target.setAttribute('data-y', y);
         })
 
     },

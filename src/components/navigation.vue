@@ -1,22 +1,22 @@
 <template>
   <nav class="navigation">
-    <navigationItem v-for="(item, index) in data" :key="index" :data="item" @change="emit" />
+    <navigationItem v-for="(item, index) in data" :key="index" :data="item" :parentTemplate="parentTemplate" @change="emit" />
   </nav>
 </template>
 
 <script>
+  import navigationItem from './navigationItem'
+  import emit from './mixins/emit'
+  import applyChange from './mixins/applyChange'
 
-import navigationItem from './navigationItem'
-import emit from './mixins/emit'
-import applyChange from './mixins/applyChange'
+  export default {
+    mixins: [emit, applyChange],
+    props: ['data', 'parentTemplate'],
+    components: {
+      navigationItem
+    },
+  }
 
-export default {
-  mixins: [emit, applyChange],
-  props: ['data'],
-  components: {
-    navigationItem
-  },
-}
 </script>
 
 

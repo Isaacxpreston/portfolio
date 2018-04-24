@@ -1,11 +1,16 @@
 // create data with default values
 
 const createBrowser = (obj) => {
+
   const defaults = {
-    'classes': {
+    classes: {
       'hidden': true,
       'browser--fullscreen': false,
       'browser--top': false,
+    },
+    'currentTemplate': {
+      template: obj.template,
+      content: obj.content
     },
     children: false
   }
@@ -32,6 +37,7 @@ const createTab = (obj) => {
 // todo: add some kind of override behavior for contact, so clcking on links opens external links (github, linkedin, email, etc)
 let contactChildren = {
   'linkedIn': createBrowser({
+    name: 'linkedIn',
     'tabData': createTab({
       'label': 'LinkedIn'
     }),
@@ -42,11 +48,13 @@ let contactChildren = {
     }
   }),
   'gitHub': {
+    name: 'gitHub',
     'tabData': createTab({
       'label': 'GitHub'
     })
   },
   'email': {
+    name: 'email',
     'tabData': createTab({
       'label': 'Email'
     })
@@ -55,6 +63,7 @@ let contactChildren = {
 
 let aboutChildren = {
   'bio': createBrowser({
+    name: 'bio',
     'tabData': createTab({
       'icon': 'B',
       'label': 'biography',
@@ -66,6 +75,7 @@ let aboutChildren = {
     }
   }),
   'resume': createBrowser({
+    name: 'resume',
     'tabData': createTab({
       'icon': 'R',
       'label': 'resume',
@@ -77,6 +87,7 @@ let aboutChildren = {
     }
   }),
   'contact': createBrowser({
+    name: 'contact',
     'tabData': createTab({
       'icon': 'C',
       'label': 'contact',
@@ -89,6 +100,7 @@ let aboutChildren = {
     'children': contactChildren
   }),
   'credits': createBrowser({
+    name: 'credits',
     'tabData': createTab({
       'icon': 'C',
       'label': 'website credits',
@@ -105,6 +117,7 @@ let aboutChildren = {
 // all browser data
 export default {
   'portfolio': createBrowser({
+    name: 'portfolio',
     'tabData': createTab({
       'icon': 'P', // todo: make icon an image / include a default image
       'label': 'my portfolio',
@@ -116,6 +129,7 @@ export default {
     },
   }),
   'about': createBrowser({
+    name: 'about',
     'tabData': createTab({
       'icon': 'A',
       'label': 'about me',
