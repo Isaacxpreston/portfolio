@@ -36,7 +36,7 @@
   import menuNav from './menuNav'
 
   // js
-  import browsers from '../assets/js/browsers'
+  // import browsers from '../assets/js/browsers'
   import initInteract from '../assets/js/interact'
 
   // mixins
@@ -47,7 +47,7 @@
     data() {
       return {
         // all browser data
-        browsers,
+        // browsers,
         // menuNav bool
         // showNavigation: false,
       }
@@ -55,61 +55,41 @@
     computed: {
       showNavigation () {
         return this.$store.state.showNavigation
+      },
+      browsers () {
+        return this.$store.state.browsers
       }
     },
     methods: {
-
 
       //
       // browser methods //
       //
       // todo: move all to vuex store as mutations
+      // todo: move to component originally called in instead of parent, eliminate emits + emit method
 
       openBrowser(browserTemplate, tabNavigatedTo) {
-
-        // todo: call mutation with arguments here
-        // if that works, move to component originally called in instead of parent
-        // eliminate emits + emit method
-
-        this.$store.commit('openBrowser', browserTemplate, tabNavigatedTo)
-
+        // dispatch bring to front + openbrowser
+        // could also be written as two commits
+        this.$store.dispatch('openBrowser', browserTemplate, tabNavigatedTo)
       },
       closeBrowser(browserTemplate) {
         // hide browser and close tab
-
-        // call hide browser method
-        this.minimizeBrowser(browserTemplate)
-
-        // close tab
-        this.browsers[browserTemplate].tabData.open = false
+        // again, could also be written as an action
+        this.$store.commit('minimizeBrowser', browserTemplate)
+        this.$store.commit('closeBrowser', browserTemplate)
       },
       minimizeBrowser(browserTemplate) {
-        // hide browser without closing tab
-        this.browsers[browserTemplate].classes.hidden = true
+        this.$store.commit('minimizeBrowser', browserTemplate)
       },
       bringToFront(browserTemplate) {
-        // add z-index class to browser on click or open
-
-        // remove class from all templates first
-        for (let key in this.browsers) {
-          this.browsers[key].classes['browser--top'] = false
-        }
-
-        // add class
-        this.browsers[browserTemplate].classes['browser--top'] = true
+        this.$store.commit('bringToFront', browserTemplate)
       },
       toggleFullscreenBrowser(browserTemplate) {
-        // toggle fullscreen class
-        this.browsers[browserTemplate].classes['browser--fullscreen'] = !this.browsers[browserTemplate].classes[
-          'browser--fullscreen'
-        ]
+        this.$store.commit('toggleFullscreenBrowser', browserTemplate)
       },
       changeCurrentTemplate(browserTemplate, data) {
-        // change browser view on navigation click (fired in navigationItem.vue)
-        this.browsers[browserTemplate].currentTemplate = {
-          template: data.template,
-          content: data.content
-        }
+        this.$store.commit('changeCurrentTemplate', {browserTemplate, data})
       },
 
       //
