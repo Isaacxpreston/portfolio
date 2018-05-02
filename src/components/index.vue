@@ -30,12 +30,16 @@
 </template>
 
 <script>
-  import interact from 'interactjs'
+  // components
   import browser from './browser'
   import tabsbar from './tabsbar'
   import menuNav from './menuNav'
-  import browsers from '../assets/js/browsers'
 
+  // js
+  import browsers from '../assets/js/browsers'
+  import initInteract from '../assets/js/interact'
+
+  // mixins
   import applyChange from './mixins/applyChange'
 
   export default {
@@ -45,38 +49,29 @@
         // all browser data
         browsers,
         // menuNav bool
-        showNavigation: false,
+        // showNavigation: false,
       }
-    },  
-    computed: {},
+    },
+    computed: {
+      showNavigation () {
+        return this.$store.state.showNavigation
+      }
+    },
     methods: {
-      // todo: make this a vuex store
+
+
       //
       // browser methods //
       //
+      // todo: move all to vuex store as mutations
+
       openBrowser(browserTemplate, tabNavigatedTo) {
 
-        // return if does not exist
-        if (!this.browsers[browserTemplate]) return
+        // todo: call mutation with arguments here
+        // if that works, move to component originally called in instead of parent
+        // eliminate emits + emit method
 
-        // close menuNav
-        this.showNavigation = false
-
-        // show browser
-        this.browsers[browserTemplate].classes.hidden = false
-
-        // open tab
-        this.browsers[browserTemplate].tabData.open = true
-
-        // bring browser to front on open
-        this.bringToFront(browserTemplate)
-
-        // click appropriate tab from menuNav
-        // todo: handle clicking parent element
-        if (tabNavigatedTo) {
-          // tabNavigatedTo = tabNavigatedTo || this.browsers[browserTemplate]
-          this.changeCurrentTemplate(browserTemplate, tabNavigatedTo)
-        }
+        this.$store.commit('openBrowser', browserTemplate, tabNavigatedTo)
 
       },
       closeBrowser(browserTemplate) {
@@ -109,22 +104,31 @@
           'browser--fullscreen'
         ]
       },
-      changeCurrentTemplate (browserTemplate, data) {
+      changeCurrentTemplate(browserTemplate, data) {
         // change browser view on navigation click (fired in navigationItem.vue)
         this.browsers[browserTemplate].currentTemplate = {
           template: data.template,
           content: data.content
         }
       },
+
       //
       // end browser methods //
       //
+
       toggleNavigation() {
         // toggle menuNav display
-        this.showNavigation = !this.showNavigation ? true : false
+        // this.showNavigation = !this.showNavigation ? true : false
+
+        // todo: store.toggleNavigation
+        this.$store.commit('toggleNavigation')
       }
     },
     mounted() {
+
+      // interactJs
+
+      initInteract()
 
       // resize / reposition elements on window resize
 
@@ -149,95 +153,6 @@
 
       })
 
-      // initialize interactjs
-
-      function dragMoveListener(event) {
-        var target = event.target,
-          // keep the dragged position in the data-x/data-y attributes
-          x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
-          y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-        // translate the element
-        target.style.webkitTransform = target.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
-        // update the posiion attributes
-        target.setAttribute('data-x', x);
-        target.setAttribute('data-y', y);
-      }
-
-      interact('.icons-container')
-        .draggable({
-          allowFrom: '.icon',
-          onmove: dragMoveListener,
-          restrict: {
-            restriction: 'parent',
-            elementRect: {
-              top: 0,
-              left: 0,
-              bottom: 1,
-              right: 1
-            }
-          }
-        })
-
-      interact('.browser')
-        .draggable({
-          allowFrom: '.topbar, .icon',
-          onmove: dragMoveListener,
-          restrict: {
-            restriction: 'parent',
-            elementRect: {
-              top: 0,
-              left: 0,
-              bottom: 1,
-              right: 1
-            }
-          }
-        })
-      interact('.browser')
-        .resizable({
-
-          // resize from all edges and corners  
-          edges: {
-            left: true,
-            right: true,
-            bottom: true,
-            top: true
-          },
-
-          // keep the edges inside the parent
-          restrictEdges: {
-            outer: 'parent',
-            endOnly: true,
-          },
-
-          // minimum size
-          restrictSize: {
-            min: {
-              width: 400,
-              height: 250
-            },
-          },
-
-          inertia: false
-        })
-        .on('resizemove', function (event) {
-          var target = event.target,
-            x = (parseFloat(target.getAttribute('data-x')) || 0),
-            y = (parseFloat(target.getAttribute('data-y')) || 0);
-
-          // update the element's style
-          target.style.width = event.rect.width + 'px';
-          target.style.height = event.rect.height + 'px';
-
-          // translate when resizing from top or left edges
-          x += event.deltaRect.left;
-          y += event.deltaRect.top;
-
-          target.style.webkitTransform = target.style.transform =
-            'translate(' + x + 'px,' + y + 'px)';
-
-          target.setAttribute('data-x', x);
-          target.setAttribute('data-y', y);
-        })
 
     },
     components: {
@@ -265,7 +180,7 @@
 
 <style scoped lang='scss'>
   @import '../assets/scss/breakpoints';
-  
+
   .vertical-center {
     position: relative;
     top: 50%;
