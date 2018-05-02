@@ -40,6 +40,8 @@
 </script>
 
 <style scoped lang="scss">
+  @import '../assets/scss/breakpoints';
+
   .tabsbar {
     position: relative;
     margin: auto;
@@ -50,7 +52,7 @@
     max-width: calc(100% - 472px);
     height: 36px;
     white-space: nowrap;
-    @media screen and (max-width: 767px) {
+    @media screen and (max-width: $mobile-max) {
       display: none;
     }
   }

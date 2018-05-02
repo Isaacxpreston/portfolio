@@ -9,10 +9,15 @@
       <!-- todo: make recursive -->
       <div v-if="browser.children" class="menuTab__children">
         
+        <div class="menuTab">
+          <div class="iconPlaceholder">X</div>
+          <div class="label">Back</div>
+        </div>
+        
         <div class="menuTab" v-for="(childBrowser, index) in browser.children" :key="'menuTab-' + index" @click="emit('openBrowser', [browser.template, childBrowser])">
 
-          <div class="iconPlaceholder">{{childBrowser['tabData']['icon']}}</div>
-          <div class="label">{{childBrowser['tabData']['label']}}</div>
+          <div class="iconPlaceholder">{{childBrowser.tabData.icon}}</div>
+          <div class="label">{{childBrowser.tabData.label}}</div>
         </div>
 
       </div>
@@ -35,6 +40,8 @@
 </script>
 
 <style scoped lang="scss">
+  @import '../assets/scss/breakpoints';
+
   .menuNav {
     position: absolute;
     width: 200px; // height: calc(100% - 60px);
@@ -43,6 +50,9 @@
     margin-left: 18px;
     margin-bottom: 60px;
     background: rgba(255, 0, 0, 0.75);
+    @media screen and (max-width: $mobile-max) {
+      width: calc(100% - 36px);
+    }
   }
 
   .menuTab {
@@ -71,9 +81,19 @@
       background: rgba(255, 0, 0, 0.15);
     }
     &:hover {
-      background: rgba(255, 0, 0, 0.25);
-      >.menuTab__children {
-        display: block;
+      @media screen and (min-width: $tablet-min) {
+        background: rgba(255, 0, 0, 0.25);
+        >.menuTab__children {
+          display: block;
+        }
+      }
+    }
+    &.hovered {
+      @media screen and (max-width: $mobile-max) {
+        background: rgba(255, 0, 0, 0.25);
+        >.menuTab__children {
+          display: block;
+        }
       }
     }
   }
@@ -88,6 +108,10 @@
     width: 200px;
     background: rgba(255, 0, 0, 0.15);
     transform: translate(200px, calc(-100% + 60px));
+    @media screen and (max-width: $mobile-max) {
+      width: 100%;
+      transform: translateY(calc(-100% + 60px));
+    }
   }
 
 </style>

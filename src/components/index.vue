@@ -47,7 +47,7 @@
         // menuNav bool
         showNavigation: false,
       }
-    },
+    },  
     computed: {},
     methods: {
       // todo: make this a vuex store
@@ -63,10 +63,10 @@
         this.showNavigation = false
 
         // show browser
-        this.browsers[browserTemplate]['classes']['hidden'] = false
+        this.browsers[browserTemplate].classes.hidden = false
 
         // open tab
-        this.browsers[browserTemplate]['tabData']['open'] = true
+        this.browsers[browserTemplate].tabData.open = true
 
         // bring browser to front on open
         this.bringToFront(browserTemplate)
@@ -86,26 +86,26 @@
         this.minimizeBrowser(browserTemplate)
 
         // close tab
-        this.browsers[browserTemplate]['tabData']['open'] = false
+        this.browsers[browserTemplate].tabData.open = false
       },
       minimizeBrowser(browserTemplate) {
         // hide browser without closing tab
-        this.browsers[browserTemplate]['classes']['hidden'] = true
+        this.browsers[browserTemplate].classes.hidden = true
       },
       bringToFront(browserTemplate) {
         // add z-index class to browser on click or open
 
         // remove class from all templates first
         for (let key in this.browsers) {
-          this.browsers[key]['classes']['browser--top'] = false
+          this.browsers[key].classes['browser--top'] = false
         }
 
         // add class
-        this.browsers[browserTemplate]['classes']['browser--top'] = true
+        this.browsers[browserTemplate].classes['browser--top'] = true
       },
       toggleFullscreenBrowser(browserTemplate) {
         // toggle fullscreen class
-        this.browsers[browserTemplate]['classes']['browser--fullscreen'] = !this.browsers[browserTemplate]['classes'][
+        this.browsers[browserTemplate].classes['browser--fullscreen'] = !this.browsers[browserTemplate].classes[
           'browser--fullscreen'
         ]
       },
@@ -264,6 +264,8 @@
 </style>
 
 <style scoped lang='scss'>
+  @import '../assets/scss/breakpoints';
+  
   .vertical-center {
     position: relative;
     top: 50%;
@@ -342,6 +344,9 @@
       right: 0;
       margin: auto;
       height: 24px;
+    }
+    @media screen and (max-width: $mobile-max) {
+      width: calc(100% - 36px);
     }
   }
 

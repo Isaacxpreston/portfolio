@@ -62,6 +62,8 @@
 </script>
 
 <style scoped lang='scss'>
+  @import '../assets/scss/breakpoints';
+
   .browser {
     position: absolute;
     top: 0;
@@ -83,7 +85,7 @@
     &--top {
       z-index: 2;
     }
-    @media screen and (max-width: 767px) {
+    @media screen and (max-width: $mobile-max) {
       // todo: find a better way to write this
       width: 100% !important;
       height: 100% !important;
@@ -113,6 +115,10 @@
     &--navigation-visible {
       width: calc(100% - 200px);
       margin-left: 200px;
+      @media screen and (max-width: $mobile-max) {
+        width: 100%;
+        margin-left: 0px;
+      }
     }
   }
 
@@ -139,13 +145,13 @@
     user-select: none;
     &--minimize {
       margin-right: 84px;
-      @media screen and (max-width: 767px) {
+      @media screen and (max-width: $mobile-max) {
         display: none;
       }
     }
     &--fullscreen {
       margin-right: 48px;
-      @media screen and (max-width: 767px) {
+      @media screen and (max-width: $mobile-max) {
         display: none;
       }
     }

@@ -21,6 +21,8 @@
 
 
 <style scoped lang="scss">
+  @import '../assets/scss/breakpoints';
+
   .navigation {
     position: absolute;
     background: rgba(255, 0, 0, 0.35);
@@ -32,6 +34,12 @@
     box-sizing: border-box;
     z-index: 2;
     padding: 12px;
+    @media screen and (max-width: $mobile-max) {
+      // width: 100%;
+      // background: white;
+      // transform: translateX(-100%);
+      display: none;
+    }
   }
 
 </style>
